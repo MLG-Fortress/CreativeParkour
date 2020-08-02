@@ -17,14 +17,15 @@
 
 package net.creativeparkour;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
 class BlocArrivee extends BlocSpecial
 {
-	BlocArrivee(Block b)
+	BlocArrivee(Block b,Material material)
 	{
-		super(b, true);
+		super(b, true,material);
 	}
 
 	@Override

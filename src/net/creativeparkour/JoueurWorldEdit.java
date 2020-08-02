@@ -24,10 +24,12 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 
+import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.bukkit.selections.Selection;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.world.World;
 
 import net.md_5.bungee.api.ChatColor;
@@ -64,30 +66,30 @@ class JoueurWorldEdit
 		this.listePerms.add("worldedit.region.walls");
 		this.listePerms.add("worldedit.region.faces");
 		this.listePerms.add("worldedit.region.smooth");
-		this.listePerms.add("worldedit.region.stack");
+		//this.listePerms.add("worldedit.region.stack");
 		this.listePerms.add("worldedit.analysis.count");
 		this.listePerms.add("worldedit.selection.size");
-		this.listePerms.add("worldedit.selection.expand");
-		this.listePerms.add("worldedit.generation.cylinder");
-		this.listePerms.add("worldedit.generation.sphere");
-		this.listePerms.add("worldedit.generation.pyramid");
-		this.listePerms.add("worldedit.clipboard.cut");
-		this.listePerms.add("worldedit.clipboard.copy");
-		this.listePerms.add("worldedit.clipboard.paste");
-		this.listePerms.add("worldedit.clipboard.flip");
-		this.listePerms.add("worldedit.clipboard.rotate");
-		this.listePerms.add("worldedit.brush.sphere");
-		this.listePerms.add("worldedit.brush.cylinder");
-		this.listePerms.add("worldedit.brush.clipboard");
-		this.listePerms.add("worldedit.brush.smooth");
-		this.listePerms.add("worldedit.brush.ex");
-		this.listePerms.add("worldedit.brush.gravity");
-		this.listePerms.add("worldedit.brush.butcher");
-		this.listePerms.add("worldedit.brush.options.material");
-		this.listePerms.add("worldedit.brush.options.range");
-		this.listePerms.add("worldedit.brush.options.size");
-		this.listePerms.add("worldedit.brush.options.mask");
-		WorldEditEvents.register();
+		//this.listePerms.add("worldedit.selection.expand");
+		//this.listePerms.add("worldedit.generation.cylinder");
+		//this.listePerms.add("worldedit.generation.sphere");
+		//this.listePerms.add("worldedit.generation.pyramid");
+		//this.listePerms.add("worldedit.clipboard.cut");
+		//this.listePerms.add("worldedit.clipboard.copy");
+		//this.listePerms.add("worldedit.clipboard.paste");
+		//this.listePerms.add("worldedit.clipboard.flip");
+		//this.listePerms.add("worldedit.clipboard.rotate");
+		//this.listePerms.add("worldedit.brush.sphere");
+		//this.listePerms.add("worldedit.brush.cylinder");
+		//this.listePerms.add("worldedit.brush.clipboard");
+		//this.listePerms.add("worldedit.brush.smooth");
+		//this.listePerms.add("worldedit.brush.ex");
+		//this.listePerms.add("worldedit.brush.gravity");
+		//this.listePerms.add("worldedit.brush.butcher");
+		//this.listePerms.add("worldedit.brush.options.material");
+		//this.listePerms.add("worldedit.brush.options.range");
+		//this.listePerms.add("worldedit.brush.options.size");
+		//this.listePerms.add("worldedit.brush.options.mask");
+		//WorldEditEvents.register();
 	}
 
 	void clear(boolean clearHistory)
@@ -134,14 +136,23 @@ class JoueurWorldEdit
 	{
 		if (j.getPlayer().equals(p))
 		{
-			Selection sel = we.getSelection(p);
+			LocalSession ls = we.getSession(p);
+			Region sel = null;
+			try 
+			{
+				sel = ls.getSelection(ls.getSelectionWorld());
+			} 
+			catch (IncompleteRegionException IncompleteRegionException) 
+			{
+				
+			}
 			if (sel != null)
 			{
 				CPMap m = j.getMapObjet();
 				if (m != null)
 				{
-					Location min = sel.getMinimumPoint();
-					Location max = sel.getMaximumPoint();
+					BlockVector3 min = sel.getMinimumPoint();
+					BlockVector3 max = sel.getMaximumPoint();
 					if (min.getBlockX() < m.getMinLoc().getX() || min.getBlockY() < m.getMinLoc().getY() || min.getBlockZ() < m.getMinLoc().getZ() || 
 							min.getBlockX() > m.getMaxLoc().getX() || min.getBlockY() > m.getMaxLoc().getY() || min.getBlockZ() > m.getMaxLoc().getZ() ||
 							max.getBlockX() < m.getMinLoc().getX() || max.getBlockY() < m.getMinLoc().getY() || max.getBlockZ() < m.getMinLoc().getZ() || 

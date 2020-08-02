@@ -55,6 +55,7 @@ import org.bukkit.scoreboard.Team.Option;
 import org.bukkit.scoreboard.Team.OptionStatus;
 
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -174,27 +175,34 @@ class Joueur
 
 		final List<ItemStack> items = new ArrayList<ItemStack>();
 		ItemStack livre = new ItemStack(Material.WRITTEN_BOOK);
-		BookMeta bm = (BookMeta) livre.getItemMeta();
-		bm.setAuthor("Obelus");
-		bm.setDisplayName(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + Langues.getMessage("help.title"));
-		List<String> pages = new ArrayList<String>();
+		BookMeta bookMeta = (BookMeta) livre.getItemMeta();
+
+		//create a page
 		boolean continuer = true;
 		for (int i=1; continuer; i++)
 		{
 			String p = Langues.getMessage("creation.help book.p" + i);
 			if (p != null)
 			{
-				pages.add(p);
+				BaseComponent[] page = new ComponentBuilder(p).create();
+				
+				//add the page to the meta
+				bookMeta.spigot().addPage(page);
 			}
 			else
 			{
 				continuer = false;
 			}
 		}
-		bm.setPages(pages);
-		livre.setItemMeta(bm);
 
+		//set the title and author of this book
+		bookMeta.setTitle(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + Langues.getMessage("help.title"));
+		bookMeta.setAuthor("Obelus");
+
+		//update the ItemStack with this new meta
+		livre.setItemMeta(bookMeta);
 		items.add(livre);
+		
 		boolean we = CreativeParkour.getWorldEdit() != null && player.hasPermission("creativeparkour.worldedit");
 		if (we) {
 			ItemStack item = Config.getWorldEditItem();
@@ -204,7 +212,7 @@ class Joueur
 			im.addEnchant(Enchantment.DIG_SPEED, 10, true);
 			item.setItemMeta(im);
 		}
-		items.add(new ItemStack(Material.SIGN));
+		items.add(new ItemStack(Material.OAK_SIGN));
 
 		// Petit délai avant de filer les objets et de mettre en créatif pour éviter que d'autres plugins ne fassent chier
 		Bukkit.getScheduler().runTaskLater(CreativeParkour.getPlugin(), new Runnable() {
@@ -290,7 +298,7 @@ class Joueur
 					player.getInventory().setHeldItemSlot(0);
 
 					PlayerInventory inv = player.getInventory();
-					ItemStack item = new ItemStack(Material.INK_SACK, 1, (short) 10);
+					ItemStack item = new ItemStack(Material.LIME_DYE, 1);
 					ItemMeta im = item.getItemMeta();
 					im.setDisplayName(ChatColor.GREEN + Langues.getMessage("play.items.return start") + ChatColor.GRAY + " (" + Langues.getMessage("play.items.right click") + ")");
 					item.setItemMeta(im);
@@ -298,7 +306,7 @@ class Joueur
 
 					int slot = 8;
 
-					item = new ItemStack(Material.INK_SACK, 1, (short) 1);
+					item = new ItemStack(Material.RED_DYE, 1);
 					im = item.getItemMeta();
 					String msg = m.contientTesteur(player) ? Langues.getMessage("play.items.leave test") : Langues.getMessage("play.items.leave");
 					im.setDisplayName(ChatColor.RED + msg + ChatColor.GRAY + " (" + Langues.getMessage("play.items.right click") + ")");
@@ -306,7 +314,7 @@ class Joueur
 					inv.setItem(slot, item);
 					slot--;
 
-					item = new ItemStack(Material.INK_SACK, 1, (short) 11);
+					item = new ItemStack(Material.YELLOW_DYE, 1);
 					im = item.getItemMeta();
 					im.setDisplayName(ChatColor.YELLOW + Langues.getMessage("play.items.player visibility") + ChatColor.GRAY + " (" + Langues.getMessage("play.items.right click") + ")");
 					item.setItemMeta(im);
@@ -327,7 +335,7 @@ class Joueur
 
 						if (Config.fantomesPasInterdits() && player.hasPermission("creativeparkour.ghosts.see") && !Config.getConfig().getBoolean("game.disable leaderboards")) // Si les fantomes sont activés ou que le problème est que ProtocolLib n'est pas là
 						{
-							item = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+							item = new ItemStack(Material.PLAYER_HEAD, 1);
 							im = item.getItemMeta();
 							im.setDisplayName(ChatColor.BLUE + Langues.getMessage("play.items.ghosts") + ChatColor.GRAY + " (" + Langues.getMessage("play.items.right click") + ")");
 							item.setItemMeta(im);
@@ -338,7 +346,7 @@ class Joueur
 
 						if (m.getCreator().equals(uuid) || player.hasPermission("creativeparkour.manage")) // Si c'est le créateur ou qu'il a la permission, objet options
 						{
-							item = new ItemStack(Material.WORKBENCH, 1);
+							item = new ItemStack(Material.CRAFTING_TABLE, 1);
 							im = item.getItemMeta();
 							im.setDisplayName(ChatColor.AQUA + Langues.getMessage("play.items.map options") + ChatColor.GRAY + " (" + Langues.getMessage("play.items.right click") + ")");
 							item.setItemMeta(im);
@@ -932,10 +940,10 @@ class Joueur
 	 */
 	void giveMontre()
 	{
-		if (getMapObjet() != null && getMapObjet().isPlayable() && (CPUtils.itemStackIsEmpty(player.getInventory().getItem(1)) || player.getInventory().getItem(1).getType() == Material.WATCH))
+		if (getMapObjet() != null && getMapObjet().isPlayable() && (CPUtils.itemStackIsEmpty(player.getInventory().getItem(1)) || player.getInventory().getItem(1).getType() == Material.CLOCK))
 		{
 			PlayerInventory inv = player.getInventory();
-			ItemStack item = new ItemStack(Material.WATCH);
+			ItemStack item = new ItemStack(Material.CLOCK);
 			ItemMeta im = item.getItemMeta();
 			im.setDisplayName(ChatColor.GOLD + Langues.getMessage("play.items.leaderboard") + ChatColor.GRAY + " (" + Langues.getMessage("play.items.right click") + ")");
 			item.setItemMeta(im);
@@ -975,7 +983,7 @@ class Joueur
 
 	private void retirerMontre()
 	{
-		if (player.getInventory().getItem(1) != null && player.getInventory().getItem(1).getType().equals(Material.WATCH))
+		if (player.getInventory().getItem(1) != null && player.getInventory().getItem(1).getType().equals(Material.CLOCK))
 			player.getInventory().setItem(1, null);
 	}
 
@@ -993,7 +1001,7 @@ class Joueur
 
 	void retirerFusees()
 	{
-		player.getInventory().remove(Material.FIREWORK);
+		player.getInventory().remove(Material.FIREWORK_ROCKET);
 		fusees = false;
 	}
 
@@ -1012,7 +1020,7 @@ class Joueur
 
 	void donnerFusees()
 	{
-		player.getInventory().setItem(3, new ItemStack(Material.FIREWORK, 64));
+		player.getInventory().setItem(3, new ItemStack(Material.FIREWORK_ROCKET, 64));
 		fusees = true;
 	}
 
@@ -1096,7 +1104,7 @@ class Joueur
 
 			if (CPUtils.itemStackIsEmpty(player.getInventory().getItem(1)))
 			{
-				ItemStack item = new ItemStack(Material.INK_SACK, 1, (short) 5);
+				ItemStack item = new ItemStack(Material.PURPLE_DYE, 1);
 				ItemMeta im = item.getItemMeta();
 				im.setDisplayName(ChatColor.DARK_PURPLE + Langues.getMessage("play.items.return checkpoint") + ChatColor.GRAY + " (" + Langues.getMessage("play.items.right click") + ")");
 				item.setItemMeta(im);
@@ -1451,6 +1459,7 @@ class Joueur
 	void tpAvecSpectateurs(Location loc)
 	{
 		Location loc1 = player.getLocation();
+		loc.setYaw(loc.getYaw() + 180);
 		player.teleport(loc);
 		if (loc.distance(loc1) > 45) // Si c'est à plus de 45 blocs, les spectateurs vont planter
 		{
@@ -1644,17 +1653,17 @@ class Joueur
 
 	void majTeteFantomes()
 	{
-		if (mapUUID != null && getMapObjet().isPlayable() && player.getInventory().contains(Material.SKULL_ITEM))
+		if (mapUUID != null && getMapObjet().isPlayable() && player.getInventory().contains(Material.PLAYER_HEAD))
 		{
 			for (ItemStack item : player.getInventory().getContents())
 			{
-				if (item != null && item.getType() == Material.SKULL_ITEM)
+				if (item != null && item.getType() == Material.PLAYER_HEAD)
 				{
 					SkullMeta meta = (SkullMeta) item.getItemMeta();
 					if (tempsFantomesChoisis.size() > 0)
-						meta.setOwner(tempsFantomesChoisis.first().getPlayerName());
+						meta.setOwningPlayer(Bukkit.getOfflinePlayer(tempsFantomesChoisis.first().getPlayerUUID()));
 					else
-						meta.setOwner(null);
+						meta.setOwningPlayer(null);
 					item.setItemMeta(meta);
 				}
 			}

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>CreativeParkour</groupId>
 	<artifactId>CreativeParkour</artifactId>
-	<version>2.11.8</version>
+	<version>2.11.9</version>
 	<name>CreativeParkour</name>
 	<description>Bukkit parkour plugin that allows all the players to play and show their skills in fun parkour maps they build or download!</description>
 	<build>
@@ -24,17 +24,17 @@
 			<id>spigot-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 		</repository>
-		<!--<repository>
+		<repository>
 			<id>sk89q-repo</id>
 			<url>http://maven.sk89q.com/repo/</url>
-		</repository>-->
+		</repository>
 		<repository>
-			<id>vault-repo</id>
-			<url>http://nexus.hc.to/content/repositories/pub_releases</url>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
 		</repository>
 		<repository>
 			<id>dmulloy2-repo</id>
-			<url>http://repo.dmulloy2.net/nexus/repository/public/</url>
+			<url>https://repo.dmulloy2.net/nexus/repository/public/</url>
 		</repository>
 	</repositories>
 	<dependencies>
@@ -42,35 +42,35 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.12-R0.1-SNAPSHOT</version>
+			<version>1.16.1-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<!--Bukkit API -->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>1.12-pre6-SNAPSHOT</version>
+			<version>1.16.1-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
-		</dependency>
+		</dependency> -->
 		<!-- WorldEdit -->
-		<!--<dependency>
+		<dependency>
 			<groupId>com.sk89q.worldedit</groupId>
 			<artifactId>worldedit-bukkit</artifactId>
-			<version>6.1.5</version>
+			<version>7.2.0-beta-02</version>
 			<scope>provided</scope>
-		</dependency>-->
+		</dependency>
 		<!-- Vault -->
 		<dependency>
 			<groupId>net.milkbowl.vault</groupId>
 			<artifactId>VaultAPI</artifactId>
-			<version>1.6</version>
+			<version>1.7</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- ProtocolLib -->
 		<dependency>
 			<groupId>com.comphenix.protocol</groupId>
-			<artifactId>ProtocolLib-API</artifactId>
-			<version>4.2.1</version>
+			<artifactId>ProtocolLib</artifactId>
+			<version>4.5.0</version>
 		</dependency>
 	</dependencies>
 	<url>https://creativeparkour.net</url>

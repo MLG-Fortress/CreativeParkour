@@ -54,16 +54,16 @@ class InventaireParametres
 			inv.clear();
 		}
 
-		setCoupleBool(PlayerSetting.NOTIFICATIONS, CreativeParkour.auMoins1_9() ? 2 : 3, Material.NAME_TAG, (short) 0, Langues.getMessage("commands.settings notifications"), Langues.getMessage("commands.settings notifications info"));
-		setCoupleBool(PlayerSetting.MSG_REWARD, CreativeParkour.auMoins1_9() ? 4 : 5, Material.CHEST, (short) 0, Langues.getMessage("commands.settings reward msg"), Langues.getMessage("commands.settings reward msg info"));
+		setCoupleBool(PlayerSetting.NOTIFICATIONS, CreativeParkour.auMoins1_9() ? 2 : 3, Material.NAME_TAG, Langues.getMessage("commands.settings notifications"), Langues.getMessage("commands.settings notifications info"));
+		setCoupleBool(PlayerSetting.MSG_REWARD, CreativeParkour.auMoins1_9() ? 4 : 5, Material.CHEST, Langues.getMessage("commands.settings reward msg"), Langues.getMessage("commands.settings reward msg info"));
 		if (CreativeParkour.auMoins1_9())
-			setCoupleBool(PlayerSetting.MSG_ELYTRES, 6, Material.ELYTRA, (short) 0, Langues.getMessage("commands.settings elytra msg"), Langues.getMessage("commands.settings elytra msg info"));
-		setCoupleBool(PlayerSetting.MESSAGES_CP_SPEC, 32, Material.STAINED_GLASS, (short) 10, Langues.getMessage("commands.settings checkpoint msg spec"), Langues.getMessage("commands.settings checkpoint msg spec info"));
+			setCoupleBool(PlayerSetting.MSG_ELYTRES, 6, Material.ELYTRA, Langues.getMessage("commands.settings elytra msg"), Langues.getMessage("commands.settings elytra msg info"));
+		setCoupleBool(PlayerSetting.MESSAGES_CP_SPEC, 32, Material.LIME_STAINED_GLASS, Langues.getMessage("commands.settings checkpoint msg spec"), Langues.getMessage("commands.settings checkpoint msg spec info"));
 
 		// Truc spécial pour MESSAGES_CP :
 		TypeMessage tm = j.typeMessages();
-		setObjetInfo(30, Material.WOOL, (short) 10, Langues.getMessage("commands.settings checkpoint msg"), Langues.getMessage("commands.settings checkpoint msg info"));
-		ItemStack item = new ItemStack(Material.INK_SACK, 1, (short) (tm != TypeMessage.NONE ? 10 : 8));
+		setObjetInfo(30, Material.LIME_WOOL, Langues.getMessage("commands.settings checkpoint msg"), Langues.getMessage("commands.settings checkpoint msg info"));
+		ItemStack item = new ItemStack(tm != TypeMessage.NONE ? Material.LIME_DYE : Material.GRAY_DYE, 1);
 		ItemMeta meta = item.getItemMeta();
 		String name = ChatColor.GREEN + Langues.getMessage("commands.settings checkpoint msg full");
 		if (tm == TypeMessage.REDUCED)
@@ -78,15 +78,15 @@ class InventaireParametres
 
 	}
 
-	private void setCoupleBool(PlayerSetting param, int posInv, Material mat, short data, String nom, String descr)
+	private void setCoupleBool(PlayerSetting param, int posInv, Material mat, String nom, String descr)
 	{
-		setObjetInfo(posInv, mat, data, nom, descr);
+		setObjetInfo(posInv, mat, nom, descr);
 		setObjetParam(posInv + 9, param);
 	}
 
-	private void setObjetInfo(int posInv, Material mat, short data, String nom, String descr)
+	private void setObjetInfo(int posInv, Material mat, String nom, String descr)
 	{
-		ItemStack item = new ItemStack(mat, 1, data);
+		ItemStack item = new ItemStack(mat, 1);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.WHITE + nom);
 		meta.setLore(CPUtils.divideText(descr, null));
@@ -97,7 +97,7 @@ class InventaireParametres
 	private void setObjetParam(int posInv, PlayerSetting param)
 	{
 		boolean valeur = j.getParamBool(param);
-		ItemStack item = new ItemStack(Material.INK_SACK, 1, (short) (valeur ? 10 : 8));
+		ItemStack item = new ItemStack(valeur ? Material.LIME_DYE : Material.GRAY_DYE, 1);
 		ItemMeta meta = item.getItemMeta();
 		String name = ChatColor.GREEN + Langues.getMessage("commands.settings enabled");
 		String msgLore = ChatColor.WHITE + Langues.getMessage("commands.settings disable");

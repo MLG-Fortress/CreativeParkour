@@ -85,7 +85,8 @@ class PlayerVisibilityManager
 				new PacketAdapter(CreativeParkour.getPlugin(), ListenerPriority.NORMAL, 
 						PacketType.Play.Server.ENTITY_EQUIPMENT) {
 					@Override
-					public void onPacketSending(PacketEvent event) {		        
+					public void onPacketSending(PacketEvent event) {
+						
 						WrapperPlayServerEntityEquipment packet = new WrapperPlayServerEntityEquipment(event.getPacket());
 						Joueur j = GameManager.getJoueur(event.getPlayer());
 						if (j != null && j.getMap() != null)

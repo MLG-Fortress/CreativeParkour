@@ -91,8 +91,8 @@ class Config implements Listener
 
 		// Fichier configuration.yml
 		path = "plugin enabled"; if(!configGenerale.contains(path)) { configGenerale.set(path, true); }
-		path = "enable auto updater"; if(!configGenerale.contains(path)) { configGenerale.set(path, true); }
-		path = "enable data collection"; if(!configGenerale.contains(path)) { configGenerale.set(path, true); }
+		path = "enable auto updater"; if(!configGenerale.contains(path)) { configGenerale.set(path, false); }
+		path = "enable data collection"; if(!configGenerale.contains(path)) { configGenerale.set(path, false); }
 		path = "language"; if(!configGenerale.contains(path)) { configGenerale.set(path, "enUS"); }
 		path = "prefix"; if(!configGenerale.contains(path)) { configGenerale.set(path, defPrefix ); }
 		path = "sign brackets"; if(!configGenerale.contains(path)) { configGenerale.set(path, "triangle"); }
@@ -115,7 +115,7 @@ class Config implements Listener
 		path = "map creation.disable potion effects"; if(!configGenerale.contains(path)) { configGenerale.set(path, false); }
 		path = "map creation.announce new maps"; if(!configGenerale.contains(path)) { configGenerale.set(path, true); }
 		path = "map creation.maps per player limit"; if(!configGenerale.contains(path)) { configGenerale.set(path, 1000); }
-		path = "map creation.worldedit item"; if(!configGenerale.contains(path)) { configGenerale.set(path, Material.WOOD_AXE.name()); }
+		path = "map creation.worldedit item"; if(!configGenerale.contains(path)) { configGenerale.set(path, Material.WOODEN_AXE.name()); }
 
 		path = "map selection.display records"; if(!configGenerale.contains(path)) { configGenerale.set(path, true); }
 
@@ -409,7 +409,7 @@ class Config implements Listener
 		} catch (Exception e) {
 			Bukkit.getLogger().warning(Config.prefix(false) + configGenerale.getString("map creation.worldedit item") + " is not a valid item (configuration.yml).");
 		}
-		return item == null || !item.hasItemMeta() ? new ItemStack(Material.WOOD_AXE) : item;
+		return item == null || !item.hasItemMeta() ? new ItemStack(Material.WOODEN_AXE) : item;
 	}
 
 

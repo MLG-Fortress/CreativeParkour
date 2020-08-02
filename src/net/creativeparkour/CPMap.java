@@ -94,6 +94,7 @@ public class CPMap
 	private List<BlocSpecial> blocsSpeciauxAir = new ArrayList<BlocSpecial>();
 	private List<BlocSpecial> blocsSpeciauxPlaques = new ArrayList<BlocSpecial>();
 	private int hauteurMort;
+	private Material typeMort;
 	private Block blocHautMort;
 	private Scoreboard scoreboardCreation;
 	private boolean valide;
@@ -109,7 +110,7 @@ public class CPMap
 	private boolean forceNoPlates = false;
 
 
-	CPMap (int id, String uuid, CPMapState etat, World monde, Block locMin, Block locMax, String nom, UUID createur, Set<UUID> contributeurs, boolean epingle, BlocSpawn spawn, List<BlocSpecial> blocsSpeciaux, int hauteurMort, boolean sneakAutorise, boolean mortLave, boolean mortEau, boolean interactionsAutorisees, List<String> listeVotes, float difficulte, float qualite, boolean forceNoPlates)
+	CPMap (int id, String uuid, CPMapState etat, World monde, Block locMin, Block locMax, String nom, UUID createur, Set<UUID> contributeurs, boolean epingle, BlocSpawn spawn, List<BlocSpecial> blocsSpeciaux, int hauteurMort,Material typeMort ,boolean sneakAutorise, boolean mortLave, boolean mortEau, boolean interactionsAutorisees, List<String> listeVotes, float difficulte, float qualite, boolean forceNoPlates)
 	{
 		boolean saveConf = false;
 
@@ -149,6 +150,7 @@ public class CPMap
 		{
 			valide = true;
 			this.hauteurMort = hauteurMort;
+			this.typeMort = typeMort;
 
 			// Votes
 			this.difficulte = difficulte;
@@ -210,7 +212,7 @@ public class CPMap
 		this.epingle = epingle;
 		scoreboardCreation = null;
 		YamlConfiguration configMaps = GameManager.getAncienneConfigMaps();
-		spawn = new BlocSpawn(monde.getBlockAt(configMaps.getInt(id + ".spawn.x"), configMaps.getInt(id + ".spawn.y"), configMaps.getInt(id + ".spawn.z")), (byte) configMaps.getInt(id + ".spawn.dir"));
+		spawn = new BlocSpawn(monde.getBlockAt(configMaps.getInt(id + ".spawn.x"), configMaps.getInt(id + ".spawn.y"), configMaps.getInt(id + ".spawn.z")),Material.getMaterial(configMaps.getString(id + ".spawn.type")), (byte) configMaps.getInt(id + ".spawn.dir"));
 		if (this.etat == CPMapState.CREATION)
 		{
 			creerScoreboardC();
@@ -219,8 +221,8 @@ public class CPMap
 		else
 		{
 			valide = true;			
-			blocsSpeciaux.add(new BlocDepart(monde.getBlockAt(configMaps.getInt(id + ".start.x"), configMaps.getInt(id + ".start.y"), configMaps.getInt(id + ".start.z"))));
-			blocsSpeciaux.add(new BlocArrivee(monde.getBlockAt(configMaps.getInt(id + ".end.x"), configMaps.getInt(id + ".end.y"), configMaps.getInt(id + ".end.z"))));
+			blocsSpeciaux.add(new BlocDepart(monde.getBlockAt(configMaps.getInt(id + ".start.x"), configMaps.getInt(id + ".start.y"), configMaps.getInt(id + ".start.z")),Material.getMaterial(configMaps.getString(id + ".start.type"))));
+			blocsSpeciaux.add(new BlocArrivee(monde.getBlockAt(configMaps.getInt(id + ".end.x"), configMaps.getInt(id + ".end.y"), configMaps.getInt(id + ".end.z")),Material.getMaterial(configMaps.getString(id + ".end.type"))));
 			// Checkpoints
 			boolean stop = false;
 			for (int i=0; !stop; i++)
@@ -231,7 +233,7 @@ public class CPMap
 				}
 				else
 				{
-					blocsSpeciaux.add(new BlocCheckpoint(monde.getBlockAt(configMaps.getInt(id + ".checkpoints." + i + ".x"), configMaps.getInt(id + ".checkpoints." + i + ".y"), configMaps.getInt(id + ".checkpoints." + i + ".z")), (byte) configMaps.getInt(id + ".checkpoints." + i + ".dir"), configMaps.getString(id + ".checkpoints." + i + ".prop")));
+					blocsSpeciaux.add(new BlocCheckpoint(monde.getBlockAt(configMaps.getInt(id + ".checkpoints." + i + ".x"), configMaps.getInt(id + ".checkpoints." + i + ".y"), configMaps.getInt(id + ".checkpoints." + i + ".z")),Material.getMaterial(configMaps.getString(id + ".checkpoints." + i + ".type")), (byte) configMaps.getInt(id + ".checkpoints." + i + ".dir"), configMaps.getString(id + ".checkpoints." + i + ".prop")));
 				}
 			}
 			// Effets
@@ -246,7 +248,7 @@ public class CPMap
 					}
 					else
 					{
-						blocsSpeciaux.add(new BlocEffet(monde.getBlockAt(configMaps.getInt(id + ".effects." + i + ".x"), configMaps.getInt(id + ".effects." + i + ".y"), configMaps.getInt(id + ".effects." + i + ".z")), configMaps.getString(id + ".effects." + i + ".effect"), configMaps.getInt(id + ".effects." + i + ".duration"), configMaps.getInt(id + ".effects." + i + ".amplifier")));
+						blocsSpeciaux.add(new BlocEffet(monde.getBlockAt(configMaps.getInt(id + ".effects." + i + ".x"), configMaps.getInt(id + ".effects." + i + ".y"), configMaps.getInt(id + ".effects." + i + ".z")),Material.getMaterial(configMaps.getString(id + ".effects." + i + ".type")), configMaps.getString(id + ".effects." + i + ".effect"), configMaps.getInt(id + ".effects." + i + ".duration"), configMaps.getInt(id + ".effects." + i + ".amplifier")));
 					}
 				}
 			}
@@ -260,7 +262,7 @@ public class CPMap
 				}
 				else
 				{
-					blocsSpeciaux.add(new BlocGive(monde.getBlockAt(configMaps.getInt(id + ".gives." + i + ".x"), configMaps.getInt(id + ".gives." + i + ".y"), configMaps.getInt(id + ".gives." + i + ".z")), configMaps.getString(id + ".gives." + i + ".type"), configMaps.getString(id + ".gives." + i + ".action")));
+					blocsSpeciaux.add(new BlocGive(monde.getBlockAt(configMaps.getInt(id + ".gives." + i + ".x"), configMaps.getInt(id + ".gives." + i + ".y"), configMaps.getInt(id + ".gives." + i + ".z")),Material.getMaterial(configMaps.getString(id + ".gives." + i + ".type")), configMaps.getString(id + ".gives." + i + ".type"), configMaps.getString(id + ".gives." + i + ".action")));
 				}
 			}
 			hauteurMort = configMaps.getInt(id + ".death height");
@@ -387,7 +389,11 @@ public class CPMap
 		else
 		{
 			if (teleporter)
-				j.getPlayer().teleport(spawn.getLocation().add(0.5, 0, 0.5));
+			{
+				Location loc = spawn.getLocation().add(0.5, 0, 0.5);
+				loc.setYaw(loc.getYaw() + 180);
+				j.getPlayer().teleport(loc);
+			}
 			j.modeJeu();
 			String c = NameManager.getNomAvecUUID(createur);
 			if (c == null) c = "unknown";
@@ -538,7 +544,7 @@ public class CPMap
 		if (spawn != null)
 			return spawn;
 		else if (etat == CPMapState.CREATION)
-			return new BlocSpawn(monde.getBlockAt((locMin.getX()+locMax.getX())/2, locMin.getY(), (locMin.getZ()+locMax.getZ())/2), (byte) 0);
+			return new BlocSpawn(monde.getBlockAt((locMin.getX()+locMax.getX())/2, locMin.getY(), (locMin.getZ()+locMax.getZ())/2),null,(byte) 0);
 		return null;
 	}
 
@@ -779,17 +785,27 @@ public class CPMap
 			config.set("spawn.y", spawn.getBloc().getY());
 			config.set("spawn.z", spawn.getBloc().getZ());
 			config.set("spawn.dir", spawn.getDir());
+			config.set("spawn.type", spawn.getMaterial().name());
 		}
 		config.set("special blocks", null);
 		for (BlocSpecial bs : blocsSpeciaux)
 		{
 			String path = "special blocks." + CPUtils.coordsToString(bs.getBloc().getX(), bs.getBloc().getY(), bs.getBloc().getZ());
 			config.set(path + ".t", "");
+			config.set(path + ".type", bs.getMaterial().name());
 			ConfigurationSection c = config.getConfigurationSection(path);
 			bs.setConfig(c);
 			config.set(path, c);
 		}
 		config.set("death height", hauteurMort);
+		try
+		{
+			config.set("death type",typeMort.name());
+		}
+		catch(NullPointerException NullPointerException)
+		{
+			config.set("death type",Material.OAK_SIGN.name());
+		}
 		config.set("sneak allowed", sneakAutorise);
 		config.set("deadly lava", mortLave);
 		config.set("deadly water", mortEau);
@@ -819,12 +835,13 @@ public class CPMap
 			spawn = null;
 			for (int i=0; i < blocs.size() && spawn == null; i++)
 			{
-				if (blocs.get(i).getType().equals(Material.SIGN_POST) || blocs.get(i).getType().equals(Material.WALL_SIGN))
+				if (CPUtils.signs.isa(blocs.get(i).getType()))
 				{
 					Sign sign = (Sign) blocs.get(i).getState();
+					org.bukkit.block.data.type.Sign sign2 = (org.bukkit.block.data.type.Sign) blocs.get(i).getBlockData();
 					if (sign.getLine(0).toLowerCase().contains(BlocSpawn.getTag()))
 					{
-						spawn = new BlocSpawn(blocs.get(i), blocs.get(i).getData());
+						spawn = new BlocSpawn(blocs.get(i), blocs.get(i).getType() ,(byte) CPUtils.BlockFaceToInt(sign2.getRotation()));
 					}
 				}
 			}
@@ -1112,7 +1129,7 @@ public class CPMap
 		etat = CPMapState.CREATION;
 		creerScoreboardC();
 		j.modeCreation();
-		CPUtils.sendClickableMsg(p, Langues.getMessage("creation.new"), null, "https://creativeparkour.net/doc/map-creation.php", "%L", ChatColor.YELLOW);
+		CPUtils.sendClickableMsg(p, Langues.getMessage("creation.new"), null, "https://web.archive.org/web/20190120125913/https://creativeparkour.net/doc/map-creation.php", "%L", ChatColor.YELLOW);
 
 		// Si le joueur n'est pas le créateur, on le met créateur et on met le créateur dans les contributeurs
 		if (!p.getUniqueId().equals(createur))
@@ -1138,6 +1155,7 @@ public class CPMap
 
 		spawn = null;
 		hauteurMort = 0;
+		typeMort = Material.AIR;
 		blocsSpeciaux = new ArrayList<BlocSpecial>();
 		List<String> erreurs = new ArrayList<String>();
 		// Variables juste là pour la vérif (pour pas avoir à les chercher dans la liste)
@@ -1148,24 +1166,42 @@ public class CPMap
 		// Recherche des panneaux de la map et remplissage des variables
 		for (Block bloc : getBlocks())
 		{
-			if (bloc.getType().equals(Material.SIGN_POST) || bloc.getType().equals(Material.WALL_SIGN))
+			if (CPUtils.signs.isa(bloc.getType()))
 			{
 				Sign sign = (Sign) bloc.getState();
+				try
+				{
+					org.bukkit.block.data.type.Sign sign2 = (org.bukkit.block.data.type.Sign) bloc.getBlockData();
+				}
+				catch(ClassCastException ClassCastException)
+				{
+					org.bukkit.block.data.type.WallSign sign2 = (org.bukkit.block.data.type.WallSign) bloc.getBlockData();
+				}
+				
 				if (sign.getLine(0).toLowerCase().contains(BlocDepart.getTag()))
 				{
-					blocsSpeciaux.add(new BlocDepart(bloc));
+					blocsSpeciaux.add(new BlocDepart(bloc,bloc.getType()));
 					departs.add(bloc);
 				}
 				else if (sign.getLine(0).toLowerCase().contains(BlocArrivee.getTag()))
 				{
-					blocsSpeciaux.add(new BlocArrivee(bloc));
+					blocsSpeciaux.add(new BlocArrivee(bloc,bloc.getType()));
 					arrivees.add(bloc);
 				}
 				else if (sign.getLine(0).toLowerCase().contains(BlocSpawn.getTag()))
 				{
 					if (spawn == null)
 					{
-						spawn = new BlocSpawn(bloc, bloc.getData());
+						try
+						{
+							org.bukkit.block.data.type.Sign sign2 = (org.bukkit.block.data.type.Sign) bloc.getBlockData();
+							spawn = new BlocSpawn(bloc,bloc.getType(),(byte) CPUtils.BlockFaceToInt(sign2.getRotation()));
+						}
+						catch(ClassCastException ClassCastException)
+						{
+							org.bukkit.block.data.type.WallSign sign2 = (org.bukkit.block.data.type.WallSign) bloc.getBlockData();
+							spawn = new BlocSpawn(bloc,bloc.getType(),(byte) CPUtils.BlockFaceToInt(sign2.getFacing()));
+						}
 					}
 					else
 					{
@@ -1174,23 +1210,33 @@ public class CPMap
 				}
 				else if (sign.getLine(0).toLowerCase().contains(BlocCheckpoint.getTag()))
 				{
-					blocsSpeciaux.add(new BlocCheckpoint(bloc, bloc.getData(), sign.getLine(1)));
+					try
+					{
+						org.bukkit.block.data.type.Sign sign2 = (org.bukkit.block.data.type.Sign) bloc.getBlockData();
+						blocsSpeciaux.add(new BlocCheckpoint(bloc,bloc.getType(),(byte) CPUtils.BlockFaceToInt(sign2.getRotation()), sign.getLine(1)));
+					}
+					catch(ClassCastException ClassCastException)
+					{
+						org.bukkit.block.data.type.WallSign sign2 = (org.bukkit.block.data.type.WallSign) bloc.getBlockData();
+						blocsSpeciaux.add(new BlocCheckpoint(bloc,bloc.getType(),(byte) CPUtils.BlockFaceToInt(sign2.getFacing()), sign.getLine(1)));
+					}
 				}
 				else if (sign.getLine(0).toLowerCase().contains(BlocEffet.getTag()))
 				{
 					if (BlocEffet.estUnPanneauValide(sign.getLines(), p, bloc))
 					{
-						blocsSpeciaux.add(new BlocEffet(bloc, sign.getLine(1), Integer.valueOf(sign.getLine(2)), Integer.valueOf(sign.getLine(3))));
+						blocsSpeciaux.add(new BlocEffet(bloc,bloc.getType(), sign.getLine(1), Integer.valueOf(sign.getLine(2)), Integer.valueOf(sign.getLine(3))));
 					}
 				}
 				else if (sign.getLine(0).toLowerCase().contains(BlocGive.getTag()))
 				{
-					blocsSpeciaux.add(new BlocGive(bloc, sign.getLine(1), sign.getLine(2)));
+					blocsSpeciaux.add(new BlocGive(bloc,bloc.getType(), sign.getLine(1), sign.getLine(2)));
 				}
 				else if (sign.getLine(0).toLowerCase().contains(CPUtils.bracket("death")))
 				{
 					if (hauteurMort == 0)
 					{
+						typeMort = bloc.getType(); 
 						hauteurMort = sign.getY();
 						blocDeath = bloc;
 					}
@@ -1201,7 +1247,7 @@ public class CPMap
 				}
 				else if (sign.getLine(0).toLowerCase().contains(BlocMort.getTag()))
 				{
-					blocsSpeciaux.add(new BlocMort(bloc));
+					blocsSpeciaux.add(new BlocMort(bloc,bloc.getType()));
 				}
 				else if (sign.getLine(0).toLowerCase().contains(BlocTP.getTag()))
 				{
@@ -1216,7 +1262,7 @@ public class CPMap
 					else if (!this.containsBlock(loc.getBlock()))
 						erreurs.add(Langues.getMessage("creation.check.tp error 2").replace("%loc", CPUtils.coordsToString(bloc.getX(), bloc.getY(), bloc.getZ())));
 					else
-						blocsSpeciaux.add(new BlocTP(bloc, loc));
+						blocsSpeciaux.add(new BlocTP(bloc, bloc.getType() ,loc));
 				}
 			}
 		}
@@ -1297,13 +1343,13 @@ public class CPMap
 	void restaurerPanneaux()
 	{
 		if (spawn != null && !(spawn.getBloc().equals(GameManager.getDefaultSpawn(monde, locMin.getX(), locMax.getX(), locMin.getY(), locMin.getZ(), locMax.getZ())) && spawn.getDir() == 0)) // Si c'est le spawn par défaut, on ne met pas le panneau
-			creerPanneau(spawn.getBloc(), spawn.getDir(), spawn.getPanneau());
+			creerPanneau(spawn.getBloc(), spawn.getMaterial() ,spawn.getDir(), spawn.getPanneau());
 		// Blocs spéciaux
 		if (blocsSpeciaux != null)
 		{
 			for (BlocSpecial bs : blocsSpeciaux)
 			{
-				creerPanneau(bs.getBloc(), bs.getDir(), bs.getPanneau());
+				creerPanneau(bs.getBloc(), bs.getMaterial() ,bs.getDir(), bs.getPanneau());
 			}
 			blocsSpeciaux.clear();
 		}
@@ -1316,13 +1362,13 @@ public class CPMap
 			{
 				for (int z=locMin.getZ(); z <= locMax.getZ() && !stop; z++)
 				{
-					stop = creerPanneau(monde.getBlockAt(x, hauteurMort, z), (byte) 0, new String[]{CPUtils.bracket("death"), "", "", ""});
+					stop = creerPanneau(monde.getBlockAt(x, hauteurMort, z),typeMort ,(byte) 0, new String[]{CPUtils.bracket("death"), "", "", ""});
 				}
 			}
 		}
 		else
 		{
-			creerPanneau(blocHautMort, (byte) 0, new String[]{CPUtils.bracket("death"), "", "", ""});
+			creerPanneau(blocHautMort, typeMort ,(byte) 0, new String[]{CPUtils.bracket("death"), "", "", ""});
 			blocHautMort = null;
 		}
 		hauteurMort = 0;
@@ -1337,19 +1383,23 @@ public class CPMap
 	 * @param lignes
 	 * @return True si le panneu a été placé, false sinon
 	 */
-	private boolean creerPanneau(Block bloc, byte dir, String[] lignes)
+	private boolean creerPanneau(Block bloc,Material type,byte dir, String[] lignes)
 	{
 		// Mise à jour du bloc
 		bloc = bloc.getWorld().getBlockAt(bloc.getX(), bloc.getY(), bloc.getZ());
 
 		boolean ok = false;
-		if (bloc.getRelative(BlockFace.DOWN).getType().isSolid())
+		//if (bloc.getRelative(BlockFace.DOWN).getType().isSolid())
+		if(CPUtils.normalsigns.isa(type))
 		{
-			bloc.setType(Material.SIGN_POST);
-			bloc.setData(dir);
+			bloc.setType(type);
+			org.bukkit.block.data.type.Sign sign = (org.bukkit.block.data.type.Sign) bloc.getBlockData();
+			sign.setRotation(CPUtils.intToBlockFace(dir)); 
+			bloc.setBlockData(sign);
 			ok = true;
 		}
-		else
+		//else
+		else if(CPUtils.wallsigns.isa(type))
 		{
 			// Test des différentes faces
 			BlockFace[] faces = {BlockFace.NORTH, BlockFace.WEST, BlockFace.SOUTH, BlockFace.EAST};
@@ -1357,13 +1407,11 @@ public class CPMap
 			{
 				if (bloc.getRelative(f).getType().isSolid())
 				{
-					bloc.setType(Material.WALL_SIGN);
+					bloc.setType(type);
 
-					org.bukkit.material.Sign signData = new org.bukkit.material.Sign(Material.WALL_SIGN);
-					signData.setFacingDirection(f.getOppositeFace());
-					org.bukkit.block.Sign sign = (org.bukkit.block.Sign) bloc.getState();
-					sign.setData(signData);
-					sign.update();
+					org.bukkit.block.data.type.WallSign sign = (org.bukkit.block.data.type.WallSign) bloc.getBlockData();
+					sign.setFacing(f.getOppositeFace());
+					bloc.setBlockData(sign);
 					ok = true;
 				}
 			}

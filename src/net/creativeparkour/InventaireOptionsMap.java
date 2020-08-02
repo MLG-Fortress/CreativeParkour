@@ -58,7 +58,7 @@ class InventaireOptionsMap
 			inv.clear();
 		}
 
-		setObjetInfo(10, Material.WEB, Langues.getMessage("commands.mapoptions sneak"), Langues.getMessage("commands.mapoptions sneak info"));
+		setObjetInfo(10, Material.COBWEB, Langues.getMessage("commands.mapoptions sneak"), Langues.getMessage("commands.mapoptions sneak info"));
 		setObjetSelection(19, map.sneakAutorise, ActionInv.INVERSER_SNEAK);
 
 		setObjetInfo(12, Material.LAVA_BUCKET, Langues.getMessage("commands.mapoptions lava"), Langues.getMessage("commands.mapoptions lava info"));
@@ -67,7 +67,7 @@ class InventaireOptionsMap
 		setObjetInfo(14, Material.WATER_BUCKET, Langues.getMessage("commands.mapoptions water"), Langues.getMessage("commands.mapoptions water info"));
 		setObjetSelection(23, map.mortEau, ActionInv.INVERSER_EAU);
 
-		setObjetInfo(16, Material.WOOD_DOOR, Langues.getMessage("commands.mapoptions interactions"), Langues.getMessage("commands.mapoptions interactions info"));
+		setObjetInfo(16, Material.OAK_DOOR, Langues.getMessage("commands.mapoptions interactions"), Langues.getMessage("commands.mapoptions interactions info"));
 		setObjetSelection(25, map.interactionsAutorisees, ActionInv.INVERSER_INTERACTIONS);
 	}
 
@@ -83,7 +83,7 @@ class InventaireOptionsMap
 
 	private void setObjetSelection(int posInv, boolean valeur, ActionInv action)
 	{
-		ItemStack item = new ItemStack(Material.INK_SACK, 1, (short) (valeur ? 10 : 8));
+		ItemStack item = new ItemStack(valeur ? Material.LIME_DYE : Material.GRAY_DYE, 1);
 		ItemMeta meta = item.getItemMeta();
 		String name = ChatColor.GREEN + Langues.getMessage("commands.settings enabled");
 		String msgLore = ChatColor.WHITE + Langues.getMessage("commands.settings disable");

@@ -17,6 +17,7 @@
 
 package net.creativeparkour;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -27,9 +28,9 @@ class BlocGive extends BlocSpecial
 	private TypeGive type;
 	private boolean donner; // True si le bloc donne l'objet, false s'il l'enlève
 
-	BlocGive (Block bloc, String type, String donner)
+	BlocGive (Block bloc,Material material, String type, String donner)
 	{
-		super(bloc, true);
+		super(bloc, true,material);
 		if (type.toLowerCase().contains("elytra"))
 			this.type = TypeGive.ELYTRA;
 		else if (type.toLowerCase().contains("firework"))

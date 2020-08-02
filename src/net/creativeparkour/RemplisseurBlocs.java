@@ -101,7 +101,7 @@ class RemplisseurBlocs extends BukkitRunnable
 					{
 						Block block = chunk.getBlock(b.xChunk, b.yChunk, b.zChunk);
 						block.setType(b.nouveauMat);
-						block.setData(b.data);
+						//block.setData(b.data);
 					}
 					it.remove();
 				}

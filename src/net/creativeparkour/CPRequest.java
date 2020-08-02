@@ -56,7 +56,8 @@ public class CPRequest implements Runnable
 
 	static void effectuerRequete(String adresse, Map<String, String> paramsPost2, Object objetAppelant, Method methodeRetour, CommandSender sender)
 	{
-		paramsPost2.put("versionPlugin", CreativeParkour.getVersion());
+		return;
+		/*paramsPost2.put("versionPlugin", CreativeParkour.getVersion());
 		paramsPost2.put("uuidServ", Config.getServUUID());
 		// ***********************************************************************************************************************************************************************************************************
 		// NEVER TRY TO ACCESS THIS URL YOURSELF. Just don't try.
@@ -72,7 +73,7 @@ public class CPRequest implements Runnable
 		if (methodeRetour != null)
 		{
 			methodesEnAttente.add(methodeRetour.getName());
-		}
+		}*/
 	}
 
 	static String messageAttente()

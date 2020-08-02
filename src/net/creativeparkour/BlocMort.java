@@ -17,14 +17,15 @@
 
 package net.creativeparkour;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
 class BlocMort extends BlocSpecial
 {
-	BlocMort(Block b)
+	BlocMort(Block b,Material material)
 	{
-		super(b, false);
+		super(b, false,material);
 	}
 
 	@Override

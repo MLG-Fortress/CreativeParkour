@@ -17,6 +17,7 @@
 
 package net.creativeparkour;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -24,9 +25,9 @@ class BlocCheckpoint extends BlocSpecial
 {
 	private boolean optional;
 
-	BlocCheckpoint(Block b, byte dir, String optionalStr)
+	BlocCheckpoint(Block b,Material material ,byte dir, String optionalStr)
 	{
-		super(b, dir, true);
+		super(b, dir, true,material);
 		this.optional = optionalStr != null && (optionalStr.toLowerCase().contains("optional") || optionalStr.equalsIgnoreCase("o"));
 	}
 

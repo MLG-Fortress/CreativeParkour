@@ -84,7 +84,7 @@ class RemplisseurBlocsDelai extends BukkitRunnable
 						final JsonObject type = types.get(jsO.get("i").getAsInt());
 						final Material mat = Material.getMaterial(type.get("t").getAsString());
 						b.setType(mat);
-						b.setData(type.get("d").getAsByte());
+						//b.setData(type.get("d").getAsByte());
 
 						if (b.getState() != null)
 						{

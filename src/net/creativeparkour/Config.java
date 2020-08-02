@@ -547,56 +547,56 @@ class Config implements Listener
 			ComponentBuilder cb = new ComponentBuilder("English").bold(true).color(ChatColor.AQUA)
 					.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/creativeparkour language enUS"))
 					.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(info.replace("%lang", ChatColor.ITALIC + "English")).create()));
-			cb.append(" / ").bold(false).color(ChatColor.BLUE).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, null)).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, null));
+			cb.append(" / ").bold(false).color(ChatColor.BLUE).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (BaseComponent[]) null)).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, null));
 
 			cb.append("Français").color(ChatColor.AQUA)
 			.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/creativeparkour language frFR"))
 			.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(info.replace("%lang", ChatColor.ITALIC + "French")).create()));
 			if (System.getProperty("user.language").equalsIgnoreCase("fr"))
 				cb.bold(true);
-			cb.append(" / ").bold(false).color(ChatColor.BLUE).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, null)).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, null));
+			cb.append(" / ").bold(false).color(ChatColor.BLUE).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (BaseComponent[]) null)).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, null));
 
 			cb.append("Deutsch").color(ChatColor.AQUA)
 			.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/creativeparkour language deDE"))
 			.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(info.replace("%lang", ChatColor.ITALIC + "German")).create()));
 			if (System.getProperty("user.language").equalsIgnoreCase("de"))
 				cb.bold(true);
-			cb.append(" / ").bold(false).color(ChatColor.BLUE).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, null)).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, null));
+			cb.append(" / ").bold(false).color(ChatColor.BLUE).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (BaseComponent[]) null)).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, null));
 
 			cb.append("한국어").color(ChatColor.AQUA)
 			.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/creativeparkour language koKR"))
 			.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(info.replace("%lang", ChatColor.ITALIC + "Korean")).create()));
 			if (System.getProperty("user.language").equalsIgnoreCase("ko"))
 				cb.bold(true);
-			cb.append(" / ").bold(false).color(ChatColor.BLUE).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, null)).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, null));
+			cb.append(" / ").bold(false).color(ChatColor.BLUE).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (BaseComponent[]) null)).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, null));
 
 			cb.append("Polski").color(ChatColor.AQUA)
 			.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/creativeparkour language plPL"))
 			.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(info.replace("%lang", ChatColor.ITALIC + "Polish")).create()));
 			if (System.getProperty("user.language").equalsIgnoreCase("pl"))
 				cb.bold(true);
-			cb.append(" / ").bold(false).color(ChatColor.BLUE).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, null)).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, null));
+			cb.append(" / ").bold(false).color(ChatColor.BLUE).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (BaseComponent[]) null)).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, null));
 
 			cb.append("Русский").color(ChatColor.AQUA)
 			.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/creativeparkour language ruRU"))
 			.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(info.replace("%lang", ChatColor.ITALIC + "Russian")).create()));
 			if (System.getProperty("user.language").equalsIgnoreCase("ru"))
 				cb.bold(true);
-			cb.append(" / ").bold(false).color(ChatColor.BLUE).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, null)).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, null));
+			cb.append(" / ").bold(false).color(ChatColor.BLUE).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (BaseComponent[]) null)).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, null));
 
 			cb.append("简体中文").color(ChatColor.AQUA)
 			.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/creativeparkour language zhCN"))
 			.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(info.replace("%lang", ChatColor.ITALIC + "Simplified Chinese")).create()));
 			if (System.getProperty("user.language").equalsIgnoreCase("zh"))
 				cb.bold(true);
-			cb.append(" / ").bold(false).color(ChatColor.BLUE).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, null)).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, null));
+			cb.append(" / ").bold(false).color(ChatColor.BLUE).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (BaseComponent[]) null)).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, null));
 
 			cb.append("Español").color(ChatColor.AQUA)
 			.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/creativeparkour language esES"))
 			.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(info.replace("%lang", ChatColor.ITALIC + "Spanish")).create()));
 			if (System.getProperty("user.language").equalsIgnoreCase("es"))
 				cb.bold(true);
-			cb.append(" / ").bold(false).color(ChatColor.BLUE).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, null)).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, null));
+			cb.append(" / ").bold(false).color(ChatColor.BLUE).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (BaseComponent[]) null)).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, null));
 
 			cb.append("Español latinoamericano").color(ChatColor.AQUA)
 			.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/creativeparkour language esMX"))

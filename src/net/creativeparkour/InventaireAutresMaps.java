@@ -125,7 +125,7 @@ class InventaireAutresMaps
 		{
 			setObjetSpecial(tailleInv - 1, Material.ENDER_PEARL, ChatColor.GREEN + Langues.getMessage("play.page") + " " + (page + 1), null, ActionInv.PAGE_SUIVANTE);
 		}
-		ItemStack item = new ItemStack(Material.EYE_OF_ENDER);
+		ItemStack item = new ItemStack(Material.ENDER_EYE);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.GREEN + Langues.getMessage("play.page") + " " + page + "/" + nbPages);
 		List<String> lore = new ArrayList<String>();

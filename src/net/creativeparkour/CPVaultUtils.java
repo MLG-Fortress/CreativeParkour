@@ -23,7 +23,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.item.Items;
 
 /**
  * Contains useful methods related to the Vault API.
@@ -41,7 +40,8 @@ public class CPVaultUtils
 	 */
 	public static String getItemName(Material material, short data)
 	{
-		return Items.itemByType(material, data).getName();
+		//return Items.itemByType(material, data).getName();
+		return material.toString();
 	}
 	
 	/**
@@ -51,7 +51,8 @@ public class CPVaultUtils
 	 */
 	public static Material getMaterial(String itemName)
 	{
-		return Items.itemByString(itemName).getType();
+		//return Items.itemByString(itemName).getType();
+		return Material.getMaterial(itemName);
 	}
 	
 	/**

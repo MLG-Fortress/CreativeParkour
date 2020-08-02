@@ -167,33 +167,35 @@ class GameManager implements Listener
 							String type = ymlBS.getString(key + ".t");
 							Map<Character, Integer> c = CPUtils.parseCoordinates(key);
 							Block bloc = w.getBlockAt(c.get('x'), c.get('y'), c.get('z'));
+							if(!ymlBS.isSet(key + ".type")) ymlBS.set(key + ".type","OAK_SIGN"); //sets it anyways for older maps
+							
 							if (type.equalsIgnoreCase(BlocDepart.getType())) // Départs
 							{
-								blocsSpeciaux.add(new BlocDepart(bloc));
+								blocsSpeciaux.add(new BlocDepart(bloc,Material.valueOf(ymlBS.getString(key + ".type"))));
 							}
 							else if (type.equalsIgnoreCase(BlocArrivee.getType())) // Arrivées
 							{
-								blocsSpeciaux.add(new BlocArrivee(bloc));
+								blocsSpeciaux.add(new BlocArrivee(bloc,Material.valueOf(ymlBS.getString(key + ".type"))));
 							}
 							else if (type.equalsIgnoreCase(BlocCheckpoint.getType())) // Checkpoints
 							{
-								blocsSpeciaux.add(new BlocCheckpoint(bloc, (byte) ymlBS.getInt(key + ".dir"), ymlBS.getString(key + ".prop")));
+								blocsSpeciaux.add(new BlocCheckpoint(bloc,Material.valueOf(ymlBS.getString(key + ".type")), (byte) ymlBS.getInt(key + ".dir"), ymlBS.getString(key + ".prop")));
 							}
 							else if (type.equalsIgnoreCase(BlocEffet.getType())) // Effets
 							{
-								blocsSpeciaux.add(new BlocEffet(bloc, ymlBS.getString(key + ".effect"), ymlBS.getInt(key + ".duration"), ymlBS.getInt(key + ".amplifier")));
+								blocsSpeciaux.add(new BlocEffet(bloc, Material.valueOf(ymlBS.getString(key + ".type")), ymlBS.getString(key + ".effect"), ymlBS.getInt(key + ".duration"), ymlBS.getInt(key + ".amplifier")));
 							}
 							else if (type.equalsIgnoreCase(BlocGive.getType())) // Gives
 							{
-								blocsSpeciaux.add(new BlocGive(bloc, ymlBS.getString(key + ".type"), ymlBS.getString(key + ".action")));
+								blocsSpeciaux.add(new BlocGive(bloc, Material.valueOf(ymlBS.getString(key + ".type")), ymlBS.getString(key + ".type"), ymlBS.getString(key + ".action")));
 							}
 							else if (type.equalsIgnoreCase(BlocMort.getType())) // Morts
 							{
-								blocsSpeciaux.add(new BlocMort(bloc));
+								blocsSpeciaux.add(new BlocMort(bloc,Material.valueOf(ymlBS.getString(key + ".type"))));
 							}
 							else if (type.equalsIgnoreCase(BlocTP.getType())) // TP
 							{
-								blocsSpeciaux.add(new BlocTP(bloc, new Location(w, ymlBS.getDouble(key + ".x"), ymlBS.getDouble(key + ".y"), ymlBS.getDouble(key + ".z"))));
+								blocsSpeciaux.add(new BlocTP(bloc,Material.valueOf(ymlBS.getString(key + ".type")), new Location(w, ymlBS.getDouble(key + ".x"), ymlBS.getDouble(key + ".y"), ymlBS.getDouble(key + ".z"))));
 							}
 						}
 					}
@@ -207,6 +209,15 @@ class GameManager implements Listener
 					} catch (Exception e) {
 						// Rien
 					}
+					
+					if(!yml.isSet("spawm.type")) yml.set("spawn.type","OAK_SIGN");
+					if(!yml.isSet("death type")) yml.set("death type","OAK_SIGN");
+					try 
+					{
+						yml.save(f);
+					} 
+					catch (IOException e) {}
+					
 					CPMap m = new CPMap (id, 
 							yml.getString("uuid"), 
 							CPMapState.valueOf(yml.getString("state").toUpperCase()), 
@@ -217,9 +228,10 @@ class GameManager implements Listener
 							UUID.fromString(yml.getString("creator")), 
 							invites, 
 							yml.getBoolean("pinned"), 
-							new BlocSpawn(w.getBlockAt(yml.getInt("spawn.x"), yml.getInt("spawn.y"), yml.getInt("spawn.z")), (byte) yml.getInt("spawn.dir")), 
+							new BlocSpawn(w.getBlockAt(yml.getInt("spawn.x"), yml.getInt("spawn.y"), yml.getInt("spawn.z")),Material.valueOf(yml.getString("spawn.type")) ,(byte) yml.getInt("spawn.dir")), 
 							blocsSpeciaux, 
 							yml.getInt("death height"),
+							yml.isSet("death type") ? Material.valueOf(yml.getString("death type")) : Material.OAK_SIGN,
 							yml.getBoolean("sneak allowed", true),
 							yml.getBoolean("deadly lava", false),
 							yml.getBoolean("deadly water", false),
@@ -240,6 +252,7 @@ class GameManager implements Listener
 				}
 			}
 		}
+		Bukkit.broadcastMessage(maps + "");
 
 
 		File fichier_temps = new File(plugin.getDataFolder(), "times.yml");
@@ -322,21 +335,21 @@ class GameManager implements Listener
 		{
 			blocsInterdits.add(Material.REDSTONE_BLOCK);
 			blocsInterdits.add(Material.REDSTONE_WIRE);
-			blocsInterdits.add(Material.REDSTONE_COMPARATOR_OFF);
-			blocsInterdits.add(Material.REDSTONE_COMPARATOR_ON);
-			blocsInterdits.add(Material.DIODE_BLOCK_OFF);
-			blocsInterdits.add(Material.DIODE_BLOCK_ON);
-			blocsInterdits.add(Material.WOOD_PLATE);
-			blocsInterdits.add(Material.STONE_PLATE);
-			blocsInterdits.add(Material.IRON_PLATE);
-			blocsInterdits.add(Material.GOLD_PLATE);
+			blocsInterdits.add(Material.COMPARATOR);
+			//blocsInterdits.add(Material.REDSTONE_COMPARATOR_ON);
+			blocsInterdits.add(Material.REPEATER);
+			//blocsInterdits.add(Material.DIODE_BLOCK_ON);
+			blocsInterdits.add(Material.OAK_PRESSURE_PLATE);
+			blocsInterdits.add(Material.STONE_PRESSURE_PLATE);
+			blocsInterdits.add(Material.LIGHT_WEIGHTED_PRESSURE_PLATE);
+			blocsInterdits.add(Material.HEAVY_WEIGHTED_PRESSURE_PLATE);
 			blocsInterdits.add(Material.TRIPWIRE_HOOK);
 			blocsInterdits.add(Material.DAYLIGHT_DETECTOR);
-			blocsInterdits.add(Material.DAYLIGHT_DETECTOR_INVERTED);
-			blocsInterdits.add(Material.REDSTONE_TORCH_ON);
-			blocsInterdits.add(Material.REDSTONE_TORCH_OFF);
+			//blocsInterdits.add(Material.DAYLIGHT);
+			blocsInterdits.add(Material.REDSTONE_TORCH);
+			//blocsInterdits.add(Material.REDSTONE_TORCH_OFF);
 			blocsInterdits.add(Material.STONE_BUTTON);
-			blocsInterdits.add(Material.WOOD_BUTTON);
+			blocsInterdits.add(Material.OAK_BUTTON);
 			blocsInterdits.add(Material.LEVER);
 			blocsInterdits.add(Material.DETECTOR_RAIL);
 			try {
@@ -348,31 +361,33 @@ class GameManager implements Listener
 		if (!Config.getConfig().getBoolean("map creation.allow fluids"))
 		{
 			blocsInterdits.add(Material.WATER);
-			blocsInterdits.add(Material.STATIONARY_WATER);
+			//blocsInterdits.add(Material.STATIONARY_WATER);
 			blocsInterdits.add(Material.LAVA);
-			blocsInterdits.add(Material.STATIONARY_LAVA);
+			//blocsInterdits.add(Material.STATIONARY_LAVA);
 			blocsInterdits.add(Material.ICE);
 		}
 		blocsInterdits.add(Material.TNT);
-		blocsInterdits.add(Material.MOB_SPAWNER);
-		blocsInterdits.add(Material.MONSTER_EGGS);
+		blocsInterdits.add(Material.SPAWNER);
+		//blocsInterdits.add(Material.SPAWN);
 		blocsInterdits.add(Material.DRAGON_EGG);
 		blocsInterdits.add(Material.ENDER_CHEST);
-		blocsInterdits.add(Material.COMMAND);
-		blocsInterdits.add(Material.PORTAL);
-		blocsInterdits.add(Material.ENDER_PORTAL);
+		blocsInterdits.add(Material.COMMAND_BLOCK);
+		blocsInterdits.add(Material.CHAIN_COMMAND_BLOCK);
+		blocsInterdits.add(Material.REPEATING_COMMAND_BLOCK);
+		blocsInterdits.add(Material.NETHER_PORTAL);
+		blocsInterdits.add(Material.END_PORTAL);
 
-		exceptionsOPs.add(Material.COMMAND);
-		try {
-			blocsInterdits.add(Material.COMMAND_CHAIN);
-			blocsInterdits.add(Material.COMMAND_REPEATING);
+		exceptionsOPs.add(Material.COMMAND_BLOCK);
+		exceptionsOPs.add(Material.CHAIN_COMMAND_BLOCK);
+		exceptionsOPs.add(Material.REPEATING_COMMAND_BLOCK);
+		/*try {
+			blocsInterdits.add(Material.CHAIN_COMMAND_BLOCK);
+			blocsInterdits.add(Material.REPEATING_COMMAND_BLOCK);
 			blocsInterdits.add(Material.END_GATEWAY);
 
-			exceptionsOPs.add(Material.COMMAND_CHAIN);
-			exceptionsOPs.add(Material.COMMAND_REPEATING);
 		} catch (NoSuchFieldError e) {
 			// Rien
-		}
+		}*/
 
 		// Téléchargement des maps téléchargeables
 		if (Config.online())
@@ -1413,8 +1428,8 @@ class GameManager implements Listener
 							mat = Material.NETHER_BRICK_STAIRS;
 							break;
 						case "PURPUR_SLAB":
-							mat = Material.STEP;
-							type.addProperty("d", 6);
+							mat = Material.NETHER_BRICK_SLAB;
+							//type.addProperty("d", 6);
 							break;
 						case "BEETROOT_BLOCK":
 							mat = Material.CARROT;
@@ -1423,8 +1438,8 @@ class GameManager implements Listener
 							mat = Material.NETHERRACK;
 							break;
 						case "NETHER_WART_BLOCK":
-							mat = Material.STAINED_CLAY;
-							type.addProperty("d", 14);
+							mat = Material.BLACK_GLAZED_TERRACOTTA;
+							//type.addProperty("d", 14);
 							break;
 						case "BONE_BLOCK":
 							mat = Material.QUARTZ_BLOCK;
@@ -1437,86 +1452,86 @@ class GameManager implements Listener
 							break;
 						case "WHITE_SHULKER_BOX":
 						case "WHITE_GLAZED_TERRACOTTA":
-							mat = Material.STAINED_CLAY;
-							type.addProperty("d", 0);
+							mat = Material.WHITE_GLAZED_TERRACOTTA;
+							//type.addProperty("d", 0);
 							break;
 						case "ORANGE_SHULKER_BOX":
 						case "ORANGE_GLAZED_TERRACOTTA":
-							mat = Material.STAINED_CLAY;
-							type.addProperty("d", 1);
+							mat = Material.WHITE_GLAZED_TERRACOTTA;
+							//type.addProperty("d", 1);
 							break;
 						case "MAGENTA_SHULKER_BOX":
 						case "MAGENTA_GLAZED_TERRACOTTA":
-							mat = Material.STAINED_CLAY;
-							type.addProperty("d", 2);
+							mat = Material.WHITE_GLAZED_TERRACOTTA;
+							//type.addProperty("d", 2);
 							break;
 						case "LIGHT_BLUE_SHULKER_BOX":
 						case "LIGHT_BLUE_GLAZED_TERRACOTTA":
-							mat = Material.STAINED_CLAY;
-							type.addProperty("d", 3);
+							mat = Material.WHITE_GLAZED_TERRACOTTA;
+							//type.addProperty("d", 3);
 							break;
 						case "YELLOW_SHULKER_BOX":
 						case "YELLOW_GLAZED_TERRACOTTA":
-							mat = Material.STAINED_CLAY;
-							type.addProperty("d", 4);
+							mat = Material.WHITE_GLAZED_TERRACOTTA;
+							//type.addProperty("d", 4);
 							break;
 						case "LIME_SHULKER_BOX":
 						case "LIME_GLAZED_TERRACOTTA":
-							mat = Material.STAINED_CLAY;
-							type.addProperty("d", 5);
+							mat = Material.WHITE_GLAZED_TERRACOTTA;
+							//type.addProperty("d", 5);
 							break;
 						case "PINK_SHULKER_BOX":
 						case "PINK_GLAZED_TERRACOTTA":
-							mat = Material.STAINED_CLAY;
-							type.addProperty("d", 6);
+							mat = Material.WHITE_GLAZED_TERRACOTTA;
+							//type.addProperty("d", 6);
 							break;
 						case "GRAY_SHULKER_BOX":
 						case "GRAY_GLAZED_TERRACOTTA":
-							mat = Material.STAINED_CLAY;
-							type.addProperty("d", 7);
+							mat = Material.WHITE_GLAZED_TERRACOTTA;
+							//type.addProperty("d", 7);
 							break;
 						case "SILVER_SHULKER_BOX":
 						case "SILVER_GLAZED_TERRACOTTA":
-							mat = Material.STAINED_CLAY;
-							type.addProperty("d", 8);
+							mat = Material.WHITE_GLAZED_TERRACOTTA;
+							//type.addProperty("d", 8);
 							break;
 						case "CYAN_SHULKER_BOX":
 						case "CYAN_GLAZED_TERRACOTTA":
-							mat = Material.STAINED_CLAY;
-							type.addProperty("d", 9);
+							mat = Material.WHITE_GLAZED_TERRACOTTA;
+							//type.addProperty("d", 9);
 							break;
 						case "PURPLE_SHULKER_BOX":
 						case "PURPLE_GLAZED_TERRACOTTA":
-							mat = Material.STAINED_CLAY;
-							type.addProperty("d", 10);
+							mat = Material.WHITE_GLAZED_TERRACOTTA;
+							//type.addProperty("d", 10);
 							break;
 						case "BLUE_SHULKER_BOX":
 						case "BLUE_GLAZED_TERRACOTTA":
-							mat = Material.STAINED_CLAY;
-							type.addProperty("d", 11);
+							mat = Material.WHITE_GLAZED_TERRACOTTA;
+							//type.addProperty("d", 11);
 							break;
 						case "BROWN_SHULKER_BOX":
 						case "BROWN_GLAZED_TERRACOTTA":
-							mat = Material.STAINED_CLAY;
-							type.addProperty("d", 12);
+							mat = Material.WHITE_GLAZED_TERRACOTTA;
+							//type.addProperty("d", 12);
 							break;
 						case "GREEN_SHULKER_BOX":
 						case "GREEN_GLAZED_TERRACOTTA":
-							mat = Material.STAINED_CLAY;
-							type.addProperty("d", 13);
+							mat = Material.WHITE_GLAZED_TERRACOTTA;
+							//type.addProperty("d", 13);
 							break;
 						case "RED_SHULKER_BOX":
 						case "RED_GLAZED_TERRACOTTA":
-							mat = Material.STAINED_CLAY;
-							type.addProperty("d", 14);
+							mat = Material.WHITE_GLAZED_TERRACOTTA;
+							//type.addProperty("d", 14);
 							break;
 						case "BLACK_SHULKER_BOX":
 						case "BLACK_GLAZED_TERRACOTTA":
-							mat = Material.STAINED_CLAY;
-							type.addProperty("d", 15);
+							mat = Material.WHITE_GLAZED_TERRACOTTA;
+							//type.addProperty("d", 15);
 							break;
 						case "CONCRETE":
-							mat = Material.STAINED_CLAY;
+							mat = Material.WHITE_GLAZED_TERRACOTTA;
 							break;
 						case "CONCRETE_POWDER":
 							mat = Material.SAND;
@@ -1533,21 +1548,21 @@ class GameManager implements Listener
 					}
 					if (mat == null)
 						throw new UnknownMaterialException("material \"" + type.get("t").getAsString() + "\" does not exist in your Minecraft version.");
-					if (mat == Material.SIGN_POST || 
-							mat == Material.WALL_SIGN || 
-							mat == Material.STANDING_BANNER || 
-							mat == Material.WALL_BANNER || 
+					if (CPUtils.normalsigns.isa(mat) || 
+							mat == Material.OAK_WALL_SIGN || 
+							mat == Material.BLACK_BANNER || 
+							mat == Material.BLACK_WALL_BANNER || 
 							mat == Material.VINE || 
 							mat == Material.LADDER ||
-							mat == Material.SKULL ||
+							mat == Material.SKELETON_SKULL ||
 							mat == Material.BEACON ||
-							mat == Material.CARPET ||
+							mat == Material.BLACK_CARPET ||
 							mat == Material.SNOW ||
 							mat == Material.GLOWSTONE ||
-							mat == Material.REDSTONE_LAMP_ON ||
+							mat == Material.REDSTONE_LAMP ||
 							mat == Material.SEA_LANTERN ||
 							mat == Material.JACK_O_LANTERN ||
-							mat == Material.BED_BLOCK ||
+							mat == Material.BLACK_BED ||
 							mat.name().contains("PISTON") ||
 							mat.name().contains("STAIR") ||
 							mat.name().contains("CHORUS") ||
@@ -1589,7 +1604,7 @@ class GameManager implements Listener
 						}
 						else
 						{
-							listeBlocs.put(vect, new MaterialData(mat, type.get("d").getAsByte()));
+							listeBlocs.put(vect, new MaterialData(mat));
 						}
 					}
 				}
@@ -1691,38 +1706,39 @@ class GameManager implements Listener
 					Map<Character, Integer> coords = CPUtils.parseCoordinates(jsO.get("c").getAsString());
 					Block block = m.getBlockAt(xMin + coords.get('x'), yMin + coords.get('y'), zMin + coords.get('z'));
 					byte dir = jsO.has("dir") ? jsO.get("dir").getAsByte() : 0;
+					Material material = jsO.has("type") ? Material.valueOf(jsO.get("type").getAsString()) : Material.OAK_SIGN;
 
 					if (type.equalsIgnoreCase(BlocSpawn.getType())) // Spawn
 					{
-						spawn = new BlocSpawn(block, dir);
+						spawn = new BlocSpawn(block, material ,dir);
 					}
 					else if (type.equalsIgnoreCase(BlocDepart.getType())) // Départs
 					{
-						blocsSpeciaux.add(new BlocDepart(block));
+						blocsSpeciaux.add(new BlocDepart(block,material));
 					}
 					else if (type.equalsIgnoreCase(BlocArrivee.getType())) // Arrivées
 					{
-						blocsSpeciaux.add(new BlocArrivee(block));
+						blocsSpeciaux.add(new BlocArrivee(block,material));
 					}
 					else if (type.equalsIgnoreCase(BlocCheckpoint.getType())) // Checkpoints
 					{
-						blocsSpeciaux.add(new BlocCheckpoint(block, dir, jsO.get("prop").getAsString()));
+						blocsSpeciaux.add(new BlocCheckpoint(block, material ,dir, jsO.get("prop").getAsString()));
 					}
 					else if (type.equalsIgnoreCase(BlocEffet.getType())) // Effets
 					{
-						blocsSpeciaux.add(new BlocEffet(block, jsO.get("effect").getAsString(), jsO.get("duration").getAsInt(), jsO.get("amplifier").getAsInt()));
+						blocsSpeciaux.add(new BlocEffet(block, material , jsO.get("effect").getAsString(), jsO.get("duration").getAsInt(), jsO.get("amplifier").getAsInt()));
 					}
 					else if (type.equalsIgnoreCase(BlocGive.getType())) // Gives
 					{
-						blocsSpeciaux.add(new BlocGive(block, jsO.get("type").getAsString(), jsO.get("action").getAsString()));
+						blocsSpeciaux.add(new BlocGive(block, material ,jsO.get("type").getAsString(), jsO.get("action").getAsString()));
 					}
 					else if (type.equalsIgnoreCase(BlocMort.getType())) // Morts
 					{
-						blocsSpeciaux.add(new BlocMort(block));
+						blocsSpeciaux.add(new BlocMort(block,material));
 					}
 					else if (type.equalsIgnoreCase(BlocTP.getType())) // TP
 					{
-						blocsSpeciaux.add(new BlocTP(block, new Location(m, xMin + jsO.get("x").getAsDouble(), yMin + jsO.get("y").getAsDouble(), zMin + jsO.get("z").getAsDouble())));
+						blocsSpeciaux.add(new BlocTP(block, material , new Location(m, xMin + jsO.get("x").getAsDouble(), yMin + jsO.get("y").getAsDouble(), zMin + jsO.get("z").getAsDouble())));
 					}
 				}
 
@@ -1751,6 +1767,7 @@ class GameManager implements Listener
 						m.getBlockAt(xMin, yMin, zMin), m.getBlockAt(xMax, yMax, zMax), 
 						nomMap, UUID.fromString(uuidCreateur), contributeurs, false,
 						spawn, blocsSpeciaux, jsContenu.get("hauteurMort").getAsInt(),
+						(jsContenu.has("typeMort") ? Material.valueOf(jsContenu.get("typeMort").getAsString()) : Material.OAK_SIGN),
 						(jsContenu.has("sneakAutorise") ? jsContenu.get("sneakAutorise").getAsBoolean() : true),
 						(jsContenu.has("mortLave") ? jsContenu.get("mortLave").getAsBoolean() : false),
 						(jsContenu.has("mortEau") ? jsContenu.get("mortEau").getAsBoolean() : false),
@@ -1801,7 +1818,11 @@ class GameManager implements Listener
 			j.setMap(m.getUUID());
 			j.modeCreation();
 			if (teleporter)
-				j.getPlayer().teleport(m.getSpawn().getLocation().add(0.5, 0, 0.5));
+			{
+				Location loc = m.getSpawn().getLocation().add(0.5, 0, 0.5);
+				loc.setYaw(loc.getYaw() + 180);
+				j.getPlayer().teleport(loc);
+			}
 			CreativeParkour.debug("TC", m.getSpawn().getLocation().add(0.5, 0, 0.5).toString());
 
 			// Si personne ne teste, on s'assure que les panneaux sont là
@@ -1925,7 +1946,7 @@ class GameManager implements Listener
 
 				CPMap map = new CPMap(id, uuid, CPMapState.CREATION, m, 
 						blocMin, m.getBlockAt(xMax, yMax, zMax), 
-						new String(), p.getUniqueId(), new HashSet<UUID>(), false, new BlocSpawn(spawn, (byte) 0), new ArrayList<BlocSpecial>(), 0, true, false, false, true, null, -1, -1, false);
+						new String(), p.getUniqueId(), new HashSet<UUID>(), false, new BlocSpawn(spawn, Material.AIR ,(byte) 0), new ArrayList<BlocSpecial>(), 0, Material.AIR,true, false, false, true, null, -1, -1, false);
 
 				maps.put(id, map);
 				map.sauvegarder();
@@ -1939,7 +1960,7 @@ class GameManager implements Listener
 				p.teleport(spawn.getLocation().add(0.5, 0, 0.5));
 				j.modeCreation();
 
-				CPUtils.sendClickableMsg(p, Langues.getMessage("creation.new"), null, "https://creativeparkour.net/doc/map-creation.php", "%L", ChatColor.YELLOW);
+				CPUtils.sendClickableMsg(p, Langues.getMessage("creation.new"), null, "https://web.archive.org/web/20190126170749/https://creativeparkour.net/doc/map-creation.php", "%L", ChatColor.YELLOW);
 				CreativeParkour.debug("MG4", "Finished building the new parkour map.");
 
 				if (blocInterdit)
@@ -2595,7 +2616,7 @@ class GameManager implements Listener
 		}
 		if (!autoriserBlocsInterdits && m != null && blocsInterdits.contains(b.getType()) && !(p.isOp() && exceptionsOPs.contains(b.getType())))
 		{
-			if (b.getType().equals(Material.MONSTER_EGGS))
+			if (b.getType().equals(Material.BAT_SPAWN_EGG))
 				p.sendMessage(Config.prefix() + ChatColor.RED + Langues.getMessage("creation.monster egg"));
 			else
 				p.sendMessage(Config.prefix() + ChatColor.RED + Langues.getMessage("creation.block not allowed"));

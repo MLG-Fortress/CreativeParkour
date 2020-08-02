@@ -31,9 +31,9 @@ class BlocEffet extends BlocSpecial
 {
 	PotionEffect effet;
 	
-	BlocEffet(Block b, String effect, int duree, int force)
+	BlocEffet(Block b,Material material, String effect, int duree, int force)
 	{
-		super(b, true);
+		super(b, true,material);
 		effect = effect.replace(" ", "_");
 		
 		PotionEffectType effectType = null;
@@ -44,6 +44,7 @@ class BlocEffet extends BlocSpecial
 		else if (effect.equalsIgnoreCase("BLINDNESS")) effectType = PotionEffectType.BLINDNESS;
 		else if (effect.equalsIgnoreCase("NIGHT_VISION")) effectType = PotionEffectType.NIGHT_VISION;
 		else if (effect.equalsIgnoreCase("LEVITATION")) effectType = PotionEffectType.LEVITATION;
+		else if (effect.equalsIgnoreCase("SLOW_FALLING")) effectType = PotionEffectType.SLOW_FALLING;
 		
 		effet = new PotionEffect(effectType, duree * 20, force);
 	}
@@ -69,9 +70,9 @@ class BlocEffet extends BlocSpecial
 	private static boolean estUnEffet(String s)
 	{
 		s = s.replace(" ", "_");
-		if (s.equalsIgnoreCase("SPEED") || s.equalsIgnoreCase("SLOW") || s.equalsIgnoreCase("SLOWNESS") || s.equalsIgnoreCase("JUMP") || s.equalsIgnoreCase("JUMP_BOOST") || s.equalsIgnoreCase("CONFUSION") || s.equalsIgnoreCase("NAUSEA") || s.equalsIgnoreCase("BLINDNESS") || s.equalsIgnoreCase("NIGHT_VISION") || (CreativeParkour.auMoins1_9() && s.equalsIgnoreCase("LEVITATION")))
+		if (s.equalsIgnoreCase("SPEED") || s.equalsIgnoreCase("SLOW") || s.equalsIgnoreCase("SLOWNESS") || s.equalsIgnoreCase("JUMP") || s.equalsIgnoreCase("JUMP_BOOST") || s.equalsIgnoreCase("CONFUSION") || s.equalsIgnoreCase("NAUSEA") || s.equalsIgnoreCase("BLINDNESS") || s.equalsIgnoreCase("NIGHT_VISION") || (CreativeParkour.auMoins1_9() && s.equalsIgnoreCase("LEVITATION")) || s.equalsIgnoreCase("SLOW_FALLING"))
 			return true;
-		else
+		else 
 			return false;
 	}
 	
@@ -121,6 +122,7 @@ class BlocEffet extends BlocSpecial
 		} catch (NoSuchFieldError e) {
 			// Rien
 		}
+		p.removePotionEffect(PotionEffectType.SLOW_FALLING);
 	}
 
 	@Override

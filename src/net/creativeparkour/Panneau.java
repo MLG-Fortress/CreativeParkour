@@ -180,7 +180,7 @@ class Panneau implements Listener
 			// Rien
 		}
 		
-		if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock() != null && (e.getClickedBlock().getType().equals(Material.SIGN_POST) || e.getClickedBlock().getType().equals(Material.WALL_SIGN)) && !e.getPlayer().isSneaking())
+		if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock() != null && (e.getClickedBlock().getType().equals(Material.OAK_SIGN) || e.getClickedBlock().getType().equals(Material.OAK_WALL_SIGN)) && !e.getPlayer().isSneaking())
 		{
 			Panneau p = getPanneau(e.getClickedBlock());
 			if (p != null)

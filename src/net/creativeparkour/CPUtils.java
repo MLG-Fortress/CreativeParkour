@@ -21,10 +21,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.zip.GZIPOutputStream;
 
 import org.bukkit.Bukkit;
@@ -32,6 +34,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -67,6 +70,10 @@ public class CPUtils
 	 * Value used in server protocol (with ProtocolLib, see <a href="http://wiki.vg/Entities#Entity">wiki.vg/Entities#Entity</a>).
 	 */
 	public static final byte sprintVal = 1 << 3;
+
+	public static final MaterialFilter signs = new MaterialFilter("sign");
+	public static final MaterialFilter wallsigns = new MaterialFilter("wallsign");
+	public static final MaterialFilter normalsigns = new MaterialFilter("normalsign");
 
 	/**
 	 * Truncates {@code s} string if it is longer than {@code maxLength}.
@@ -115,13 +122,19 @@ public class CPUtils
 	 * @param oldName Sound's name before 1.9.
 	 * @return The actual sound.
 	 */
+
 	public static Sound getSound(String name, String oldName)
 	{
-		try {
-			return Sound.valueOf(name);
-		} catch (IllegalArgumentException e) {
-			return Sound.valueOf(oldName);
-		}
+		//try {
+		return Sound.valueOf(name);
+		//} catch (IllegalArgumentException e) {
+		//	return Sound.valueOf(oldName);
+		//}
+	}
+
+	public static Sound getSound(String name)
+	{
+		return Sound.valueOf(name);
 	}
 
 	/**
@@ -347,7 +360,7 @@ public class CPUtils
 		{
 			p.sendMessage(Config.prefix() + ChatColor.RED + Langues.getMessage("error deprecated"));
 			return;
-			
+
 			/*HashMap<String, String> params = new HashMap<String, String>();
 			params.put("ipJoueur", p.getAddress().getHostName());
 			params.put("uuidJoueur", p.getUniqueId().toString());
@@ -498,5 +511,53 @@ public class CPUtils
 		}
 
 		return baos.toByteArray();
+	}
+
+	public static BlockFace intToBlockFace(int dir)
+	{
+		final BlockFace[] sides = {BlockFace.NORTH,BlockFace.NORTH_NORTH_EAST,BlockFace.NORTH_EAST,BlockFace.EAST_NORTH_EAST,BlockFace.EAST,BlockFace.EAST_SOUTH_EAST,BlockFace.SOUTH_EAST,BlockFace.SOUTH_SOUTH_EAST,BlockFace.SOUTH,BlockFace.SOUTH_SOUTH_WEST,BlockFace.SOUTH_WEST,BlockFace.WEST_SOUTH_WEST,BlockFace.WEST,BlockFace.WEST_NORTH_WEST,BlockFace.NORTH_WEST,BlockFace.NORTH_NORTH_WEST};
+		return sides[dir];
+	}
+
+	public static int BlockFaceToInt(BlockFace side)
+	{
+		switch(side)
+		{
+		case NORTH:
+			return 0;
+		case NORTH_NORTH_EAST:
+			return 1;
+		case NORTH_EAST:
+			return 2;
+		case EAST_NORTH_EAST:
+			return 3;
+		case EAST:
+			return 4;
+		case EAST_SOUTH_EAST:
+			return 5;
+		case SOUTH_EAST:
+			return 6;
+		case SOUTH_SOUTH_EAST:
+			return 7;
+		case SOUTH:
+			return 8;
+		case SOUTH_SOUTH_WEST:
+			return 9;
+		case SOUTH_WEST:
+			return 10;
+		case WEST_SOUTH_WEST:
+			return 11;
+		case WEST:
+			return 12;
+		case WEST_NORTH_WEST:
+			return 13;
+		case NORTH_WEST:
+			return 14;
+		case NORTH_NORTH_WEST:
+			return 15;
+		default:
+			break;	
+		}
+		return -1;
 	}
 }

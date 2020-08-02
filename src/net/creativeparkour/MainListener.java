@@ -435,7 +435,7 @@ class MainListener implements Listener
 			m = j.getMapObjet();
 		}
 
-		if (m != null && j.getEtat() == EtatJoueur.JEU && e.getAction() == Action.PHYSICAL && b.getType() == Material.STONE_PLATE) // Si c'ets potentiellement un bloc spécial
+		if (m != null && j.getEtat() == EtatJoueur.JEU && e.getAction() == Action.PHYSICAL && b.getType() == Material.STONE_PRESSURE_PLATE) // Si c'ets potentiellement un bloc spécial
 		{
 			for (BlocSpecial bs : m.getBlocsSpeciauxPlaques())
 			{
@@ -446,14 +446,14 @@ class MainListener implements Listener
 				}
 			}
 		}
-		else if (e.getAction() == Action.PHYSICAL && b.getType() == Material.SOIL && m != null) // S'il saute sur de la terre labourée, on annule
+		else if (e.getAction() == Action.PHYSICAL && b.getType() == Material.FARMLAND && m != null) // S'il saute sur de la terre labourée, on annule
 		{
 			e.setCancelled(true);
 		}
 		else
 		{
 			ItemStack objetMain = CPUtils.itemInHand(p);
-			if (m != null && j.aFusees() && !CPUtils.itemStackIsEmpty(objetMain) && objetMain.getType() == Material.FIREWORK)
+			if (m != null && j.aFusees() && !CPUtils.itemStackIsEmpty(objetMain) && objetMain.getType() == Material.FIREWORK_ROCKET)
 			{
 				boolean gliding = false;
 				try {
@@ -481,7 +481,7 @@ class MainListener implements Listener
 					j.retirerPerles();
 					j.modeSpectateur(false); // Désactivation du mode spectateur s'il y est
 					j.giveMontre();
-					p.playSound(p.getLocation(), CPUtils.getSound("ENTITY_ENDERMEN_TELEPORT", "ENDERMAN_TELEPORT"), 1, 1);
+					p.playSound(p.getLocation(), CPUtils.getSound("ENTITY_ENDERMAN_TELEPORT"), 1, 1);
 				}
 				else if (objetMain.getItemMeta().getDisplayName().contains(Langues.getMessage("play.items.return checkpoint")))
 				{
@@ -495,7 +495,7 @@ class MainListener implements Listener
 						j.stopTimer();
 					}
 					j.modeSpectateur(false); // Désactivation du mode spectateur s'il y est
-					p.playSound(p.getLocation(), CPUtils.getSound("ENTITY_ENDERMEN_TELEPORT", "ENDERMAN_TELEPORT"), 1, 1);
+					p.playSound(p.getLocation(), CPUtils.getSound("ENTITY_ENDERMAN_TELEPORT"), 1, 1);
 				}
 				else if (m != null && (m.isPlayable() || m.contientTesteur(p)) && objetMain.getItemMeta().getDisplayName().contains(Langues.getMessage("play.items.player visibility")))
 				{
@@ -504,14 +504,14 @@ class MainListener implements Listener
 				else if (m != null && m.isPlayable() && objetMain.getItemMeta().getDisplayName().contains(Langues.getMessage("play.items.leaderboard")))
 				{
 					j.inverserLeaderboards();
-					p.playSound(p.getLocation(), CPUtils.getSound("ENTITY_ITEM_PICKUP", "ITEM_PICKUP"), 1, 1);
+					p.playSound(p.getLocation(), CPUtils.getSound("ENTITY_ITEM_PICKUP"), 1, 1);
 				}
 				else if (m != null && m.isPlayable() && objetMain.getItemMeta().getDisplayName().contains(Langues.getMessage("play.items.spectator")))
 				{
 					if (p.hasPermission("creativeparkour.spectate"))
 					{
 						j.modeSpectateur(j.getEtat() != EtatJoueur.SPECTATEUR); // Echange de son mode (jeu/spectateur)
-						p.playSound(p.getLocation(), CPUtils.getSound("ENTITY_ITEM_PICKUP", "ITEM_PICKUP"), 1, 1);
+						p.playSound(p.getLocation(), CPUtils.getSound("ENTITY_ITEM_PICKUP"), 1, 1);
 					}
 				}
 				else if (m != null && m.isPlayable() && objetMain.getItemMeta().getDisplayName().contains(Langues.getMessage("play.items.map options")))
@@ -562,10 +562,10 @@ class MainListener implements Listener
 				else if (objetMain.getItemMeta().getDisplayName().toLowerCase().contains(Langues.getMessage("play.items.leave").toLowerCase()))
 				{
 					j.quitter(true, false);
-					p.playSound(p.getLocation(), CPUtils.getSound("ENTITY_ENDERMEN_TELEPORT", "ENDERMAN_TELEPORT"), 1, 1);
+					p.playSound(p.getLocation(), CPUtils.getSound("ENTITY_ENDERMAN_TELEPORT", "ENDERMAN_TELEPORT"), 1, 1);
 				}
 			}
-			else if (b != null && e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && (b.getType().equals(Material.CHEST) || b.getType().equals(Material.TRAPPED_CHEST) || b.getType().equals(Material.DROPPER) || b.getType().equals(Material.DISPENSER) || b.getType().equals(Material.FURNACE) || b.getType().equals(Material.ANVIL) || b.getType().equals(Material.ENCHANTMENT_TABLE) || b.getType().name().contains("SHULKER")) && GameManager.estDansUneMap(b))
+			else if (b != null && e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && (b.getType().equals(Material.CHEST) || b.getType().equals(Material.TRAPPED_CHEST) || b.getType().equals(Material.DROPPER) || b.getType().equals(Material.DISPENSER) || b.getType().equals(Material.FURNACE) || b.getType().equals(Material.ANVIL) || b.getType().equals(Material.ENCHANTING_TABLE) || b.getType().name().contains("SHULKER")) && GameManager.estDansUneMap(b))
 			{
 				p.sendMessage(Config.prefix() + ChatColor.RED + Langues.getMessage("not allowed"));
 				e.setCancelled(true);
@@ -680,7 +680,7 @@ class MainListener implements Listener
 						List<BlocCheckpoint> checkpoints = j.getCheckpoints();
 						if (checkpoints.size() > 0)
 						{
-							j.tpAvecSpectateurs(checkpoints.get(checkpoints.size()-1).getLocation().add(0.5, 0, 0.5));
+							j.tpAvecSpectateurs(checkpoints.get(checkpoints.size()-1).getLocation().add(0.5,0,0.5));
 						}
 						else
 						{
@@ -690,7 +690,7 @@ class MainListener implements Listener
 							j.retirerPerles();
 							j.stopTimer();
 						}
-						p.playSound(p.getLocation(), CPUtils.getSound("ENTITY_ENDERMEN_TELEPORT", "ENDERMAN_TELEPORT"), 1, 1);
+						p.playSound(p.getLocation(), CPUtils.getSound("ENTITY_ENDERMAN_TELEPORT"), 1, 1);
 					}
 					else if (!m.sneakAutorise && p.isSneaking())
 					{
@@ -720,7 +720,7 @@ class MainListener implements Listener
 							{
 								if (CPUtils.blockTouched(rel, l))
 								{
-									if (m.mortLave && rel.getType() == Material.STATIONARY_LAVA)
+									if (m.mortLave && rel.getType() == Material.LAVA)
 									{
 										mort = true;
 										j.tuer();
@@ -731,7 +731,7 @@ class MainListener implements Listener
 										}
 										break;
 									}
-									else if (m.mortEau && rel.getType() == Material.STATIONARY_WATER)
+									else if (m.mortEau && rel.getType() == Material.WATER)
 									{
 										mort = true;
 										j.tuer();
@@ -874,19 +874,19 @@ class MainListener implements Listener
 		}
 		else
 		{
-			if (j != null && j.getEtat() == EtatJoueur.CREATION && e.getBlock().getType().equals(Material.WALL_SIGN) && panneauSpecialDebout)
+			if (j != null && j.getEtat() == EtatJoueur.CREATION && CPUtils.wallsigns.isa(e.getBlock().getType()) && panneauSpecialDebout)
 			{
 				p.sendMessage(Config.prefix() + ChatColor.RED + Langues.getMessage("creation.check.sign post error"));
-				e.getBlock().setType(Material.SIGN_POST);
+				e.getBlock().setType(Material.valueOf(e.getBlock().getType().name().replace("_WALL","")));
 				Sign s = (Sign) e.getBlock().getState();
 				s.setLine(0, e.getLine(0));
 				s.update();
 				if (e.getBlock().getRelative(BlockFace.DOWN).isEmpty())
 				{
-					e.getBlock().getRelative(BlockFace.DOWN).setType(Material.STAINED_CLAY);
+					e.getBlock().getRelative(BlockFace.DOWN).setType(Material.BLACK_GLAZED_TERRACOTTA);
 				}
 			}
-			if (j != null && j.getEtat() == EtatJoueur.CREATION && e.getBlock().getType().equals(Material.SIGN_POST) && e.getLine(0).toLowerCase().contains(BlocEffet.getTag()))
+			if (j != null && j.getEtat() == EtatJoueur.CREATION &&  CPUtils.normalsigns.isa(e.getBlock().getType()) && e.getLine(0).toLowerCase().contains(BlocEffet.getTag()))
 			{
 				BlocEffet.estUnPanneauValide(e.getLines(), p, e.getBlock());
 			}

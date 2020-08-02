@@ -25,17 +25,22 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.blocks.BaseBlock;
+import com.sk89q.worldedit.WorldEditException;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.event.extent.EditSessionEvent;
 import com.sk89q.worldedit.extension.platform.Actor;
+import com.sk89q.worldedit.extent.AbstractBufferingExtent;
 import com.sk89q.worldedit.extent.Extent;
-import com.sk89q.worldedit.extent.logging.AbstractLoggingExtent;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.math.Vector3;
 import com.sk89q.worldedit.util.eventbus.Subscribe;
+import com.sk89q.worldedit.world.block.BlockState;
+import com.sk89q.worldedit.world.block.BlockStateHolder;
 
-class WorldEditEvents {
-	private static boolean registered = false;
+class WorldEditEvents 
+{
+	/*private static boolean registered = false;
 	static Map<CPMap, Date> majMaps = new HashMap<CPMap, Date>();
 
 	@Subscribe
@@ -47,7 +52,7 @@ class WorldEditEvents {
 		// but the field may be null if, for example, the edit session
 		// is created for another plugin
 		if (actor != null && actor.isPlayer()) {
-			event.setExtent(new WorldEditLogger(actor, event.getExtent()));
+			event.setExtent((Extent) new WorldEditLogger(actor, event.getExtent()));
 		}
 	}
 
@@ -58,20 +63,22 @@ class WorldEditEvents {
 			WorldEdit.getInstance().getEventBus().register(new WorldEditEvents());
 			registered = true;
 		}
-	}
+	}*/
 }
 
-class WorldEditLogger extends AbstractLoggingExtent {
+/*class WorldEditLogger extends AbstractBufferingExtent {
+	
 	private final Actor actor;
 
-	WorldEditLogger(Actor actor, Extent extent) {
+	WorldEditLogger(Actor actor, Extent extent) 
+	{
 		super(extent);
 		this.actor = actor;
 	}
 
-	@Override
-	protected void onBlockChange(Vector position, BaseBlock newBlock) {
-		BaseBlock oldBlock = getBlock(position);
+	protected void onBlockChange(BlockVector3 position, BlockState newBlock) 
+	{
+		BlockState oldBlock = position.
 
 		// Remember that the player is the internal WorldEdit one, which
 		// MAY be castable to an implementation-specific one, but this
@@ -83,7 +90,7 @@ class WorldEditLogger extends AbstractLoggingExtent {
 		// BukkitPlayer, or even maybe something else!
 		//System.out.println(actor.getName() + " set block @ " + position + " from " + oldBlock + " to " + newBlock);
 		
-		Player p = Bukkit.getPlayer(actor.getName());
+		Player p = (Player) BukkitAdapter.adapt(actor);
 		final Joueur j = GameManager.getJoueur(p);
 		boolean revert = false;
 		boolean dansUneMap = false;
@@ -116,9 +123,9 @@ class WorldEditLogger extends AbstractLoggingExtent {
 						j.avertissementWorldEdit(Langues.getMessage("creation.wand.error"));
 
 				}
-				else if (GameManager.blocsInterdits.contains(Material.getMaterial(newBlock.getType())))
+				else if (GameManager.blocsInterdits.contains(Material.getMaterial(newBlock.toBaseBlock().getType())))
 				{
-					newBlock.setIdAndData(oldBlock.getId(), oldBlock.getData());
+					newBlock.setIdAndData(oldBlock.toBaseBlock().getBlockType().getLegacyId(),(byte) 0);
 					j.avertissementWorldEdit(Langues.getMessage("creation.wand.error block"));
 				}
 			}
@@ -130,7 +137,13 @@ class WorldEditLogger extends AbstractLoggingExtent {
 		
 		if (revert)
 		{
-			newBlock.setIdAndData(oldBlock.getId(), oldBlock.getData());
+			newBlock.setIdAndData(oldBlock.getBlockType());
 		}
 	}
-}
+
+	@Override
+	public <T extends BlockStateHolder<T>> boolean setBlock(BlockVector3 arg0, T arg1) throws WorldEditException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+}*/

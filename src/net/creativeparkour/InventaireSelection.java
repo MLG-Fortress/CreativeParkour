@@ -128,12 +128,10 @@ class InventaireSelection
 				int nbItems = 0;
 				elements.clear();
 				speciaux.clear();
-				//				nano = Util.debugNanoTime("IS3", nano);
 				int slot = 0;
-				//		long nano2 = System.nanoTime();
 				for (int i=limiteMin; continuer && i < nbMaps; i++)
 				{
-					//			nano2 = Util.debugNanoTime("IS4a", nano2);
+					List<String> lore = new ArrayList<String>();
 					CPMap m = mapsAffichees.get(i);
 					ItemStack item = new ItemStack(Material.MAP);
 					ItemMeta meta = item.getItemMeta();
@@ -141,8 +139,21 @@ class InventaireSelection
 					if (m.isPinned())
 						gras += ChatColor.BOLD;
 					meta.setDisplayName(ChatColor.AQUA + gras + m.getName());
-
-					List<String> lore = new ArrayList<String>();
+					
+					String nomCreateur = null;
+					if (m.getWebData() == null) // Si est une map locale
+						nomCreateur = NameManager.getNomAvecUUID(m.getCreator());
+					else // Si c'est une map téléchargeable
+						nomCreateur = (String) m.getWebData().get("createur");
+					if (nomCreateur == null)
+						nomCreateur = "Unknown";
+					lore.add(ChatColor.GRAY + "by " + nomCreateur);
+					//			nano2 = Util.debugNanoTime("IS4b", nano2);
+					for (UUID u : m.getContributeurs())
+					{
+						lore.add(ChatColor.DARK_GRAY + NameManager.getNomAvecUUID(u));
+					}
+					
 					int qualiteInf = (int) m.getQuality();
 					if (qualiteInf > 0)
 					{
@@ -180,20 +191,7 @@ class InventaireSelection
 						String difficulteS = CPUtils.truncatedStr(String.valueOf(difficulte), 3);
 						if (difficulteS.endsWith(".0"))
 							difficulteS = difficulteS.substring(0, 1);
-						lore.add(ChatColor.WHITE + Langues.getMessage("play.difficulty") + ": " + couleur + difficulteS + "/5");
-					}
-					String nomCreateur = null;
-					if (m.getWebData() == null) // Si est une map locale
-						nomCreateur = NameManager.getNomAvecUUID(m.getCreator());
-					else // Si c'est une map téléchargeable
-						nomCreateur = (String) m.getWebData().get("createur");
-					if (nomCreateur == null)
-						nomCreateur = "Unknown";
-					lore.add(ChatColor.LIGHT_PURPLE + nomCreateur);
-					//			nano2 = Util.debugNanoTime("IS4b", nano2);
-					for (UUID u : m.getContributeurs())
-					{
-						lore.add(ChatColor.DARK_PURPLE + NameManager.getNomAvecUUID(u));
+						lore.add(ChatColor.GRAY + Langues.getMessage("play.difficulty") + ": " + couleur + difficulteS + "/5");
 					}
 					if (m.getWebData() == null)
 					{
@@ -221,7 +219,7 @@ class InventaireSelection
 							//					nano2 = Util.debugNanoTime("IS4e", nano2);
 							if (secondes > 0)
 							{
-								lore.add(ChatColor.YELLOW + Langues.getMessage("play.your record") + ": " + secondes + "s");
+								lore.add(ChatColor.GRAY + Langues.getMessage("play.your record") + ": " + ChatColor.WHITE + secondes + "s");
 							}
 						}
 
@@ -271,7 +269,7 @@ class InventaireSelection
 					itemsAMettre.put(tailleInv - 1, item);
 					speciaux.put(tailleInv - 1, ActionInv.PAGE_SUIVANTE);
 				}
-				ItemStack item = new ItemStack(Material.EYE_OF_ENDER);
+				ItemStack item = new ItemStack(Material.ENDER_EYE);
 				ItemMeta meta = item.getItemMeta();
 				meta.setDisplayName(ChatColor.GREEN + Langues.getMessage("play.page") + " " + pageF + "/" + nbPagesF);
 				List<String> lore = new ArrayList<String>();
@@ -281,14 +279,17 @@ class InventaireSelection
 				itemsAMettre.put(tailleInv - 5, item);
 
 				// Objets d'affichage
-				short d = 13;
-				String texte = Langues.getMessage("play.descending sorting");
+				String texte;
 				if (triCroissant == -1)
 				{
-					d = 9;
 					texte = Langues.getMessage("play.ascending sorting");
+					item = new ItemStack(Material.PINK_DYE, 1);
 				}
-				item = new ItemStack(Material.INK_SACK, 1, d);
+				else
+				{
+					texte = Langues.getMessage("play.descending sorting");
+					item = new ItemStack(Material.MAGENTA_DYE, 1);
+				}
 				meta = item.getItemMeta();
 				meta.setDisplayName(ChatColor.YELLOW + texte);
 				item.setItemMeta(meta);
@@ -300,14 +301,16 @@ class InventaireSelection
 
 				if (Config.online() && p.hasPermission("creativeparkour.download"))
 				{
-					d = 8;
-					texte = Langues.getMessage("play.show local");
 					if (afficherLocales)
 					{
-						d = 10;
 						texte = Langues.getMessage("play.hide local");
+						item = new ItemStack(Material.LIME_DYE, 1);
 					}
-					item = new ItemStack(Material.INK_SACK, 1, d);
+					else
+					{
+						texte = Langues.getMessage("play.show local");
+						item = new ItemStack(Material.GRAY_DYE, 1);
+					}
 					meta = item.getItemMeta();
 					meta.setDisplayName(ChatColor.YELLOW + texte);
 					item.setItemMeta(meta);
@@ -317,16 +320,18 @@ class InventaireSelection
 						a = ActionInv.MASQUER_LOCALES;
 					speciaux.put(tailleInv - 7, a);
 
-					d = 8;
-					texte = Langues.getMessage("play.show downloadable");
 					if (afficherTelechargeables)
 					{
-						d = 10;
 						texte = Langues.getMessage("play.hide downloadable");
+						item = new ItemStack(Material.LIME_DYE, 1);
 					}
-					item = new ItemStack(Material.INK_SACK, 1, d);
+					else
+					{
+						texte = Langues.getMessage("play.show downloadable");
+						item = new ItemStack(Material.GRAY_DYE, 1);
+					}
 					meta = item.getItemMeta();
-					meta.setDisplayName(ChatColor.YELLOW+ texte);
+					meta.setDisplayName(ChatColor.YELLOW + texte);
 					item.setItemMeta(meta);
 					itemsAMettre.put(tailleInv - 8, item);
 					a = ActionInv.AFFICHER_TELECHARGEABLES;
@@ -336,14 +341,14 @@ class InventaireSelection
 				}
 
 				// Objets de tri
-				item = new ItemStack(Material.INK_SACK, 1, (short) 5);
+				item = new ItemStack(Material.PURPLE_DYE, 1);
 				meta = item.getItemMeta();
 				meta.setDisplayName(ChatColor.LIGHT_PURPLE + Langues.getMessage("play.sort creator"));
 				item.setItemMeta(meta);
 				itemsAMettre.put(tailleInv - 3, item);
 				speciaux.put(tailleInv - 3, ActionInv.TRI_CREATEUR);
 
-				item = new ItemStack(Material.INK_SACK, 1, (short) 5);
+				item = new ItemStack(Material.PURPLE_DYE, 1);
 				meta = item.getItemMeta();
 				meta.setDisplayName(ChatColor.LIGHT_PURPLE + Langues.getMessage("play.sort name"));
 				item.setItemMeta(meta);
@@ -352,7 +357,7 @@ class InventaireSelection
 
 				if (Config.getConfig().getBoolean("game.enable map rating"))
 				{
-					item = new ItemStack(Material.INK_SACK, 1, (short) 5);
+					item = new ItemStack(Material.PURPLE_DYE, 1);
 					meta = item.getItemMeta();
 					meta.setDisplayName(ChatColor.LIGHT_PURPLE + Langues.getMessage("play.sort difficulty"));
 					item.setItemMeta(meta);

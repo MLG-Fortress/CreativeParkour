@@ -32,19 +32,22 @@ abstract class BlocSpecial
 	protected byte dir = 0;
 	private boolean plaquePossible = false;
 	private boolean plaquePression = false;
+	private Material material;
 
-	BlocSpecial(Block b, boolean plaquePossible)
+	BlocSpecial(Block b, boolean plaquePossible,Material material)
 	{
 		this.bloc = b;
 		this.dir = 0;
 		this.plaquePossible = plaquePossible;
+		this.material = material;
 	}
 
-	BlocSpecial(Block b, byte dir, boolean plaquePossible)
+	BlocSpecial(Block b, byte dir, boolean plaquePossible,Material material)
 	{
 		this.bloc = b;
 		this.dir = dir;
 		this.plaquePossible = plaquePossible;
+		this.material = material;
 	}
 
 	void setDir(byte dir)
@@ -102,7 +105,7 @@ abstract class BlocSpecial
 			Material rel = bloc.getRelative(BlockFace.DOWN).getType();
 			if (rel.isSolid() && rel.isOccluding())
 			{
-				bloc.setType(Material.STONE_PLATE);
+				bloc.setType(Material.STONE_PRESSURE_PLATE);
 				plaquePression = true;
 				return;
 			}
@@ -114,6 +117,11 @@ abstract class BlocSpecial
 	boolean estPlaquePression()
 	{
 		return plaquePression;
+	}
+	
+	Material getMaterial()
+	{
+		return this.material;
 	}
 
 	abstract void faireAction(Joueur j);

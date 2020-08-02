@@ -149,10 +149,10 @@ class Fantome
 				// On bouge le fantôme
 				Vector nouvelleLoc = nouvellePos.getVector();
 				Vector ancienneLoc = posActuelle.getVector();
-				int dx = (int) ((nouvelleLoc.getX() * 32 - ancienneLoc.getX() * 32) * 128);
-				int dy = (int) ((nouvelleLoc.getY() * 32 - ancienneLoc.getY() * 32) * 128);
-				int dz = (int) ((nouvelleLoc.getZ() * 32 - ancienneLoc.getZ() * 32) * 128);
-				if (Math.abs(dx) < 32768 && Math.abs(dy) < 32768 && Math.abs(dz) < 32768) // S'il bouge de moins de 8 blocs, RelEntityMove
+				double dx = ((nouvelleLoc.getX() - ancienneLoc.getX()));
+				double dy = ((nouvelleLoc.getY() - ancienneLoc.getY()));
+				double dz = ((nouvelleLoc.getZ() - ancienneLoc.getZ()));
+				if (Math.abs(dx) < 8 && Math.abs(dy) < 8 && Math.abs(dz) < 8) // S'il bouge de moins de 8 blocs, RelEntityMove
 				{
 					WrapperPlayServerRelEntityMove move = new WrapperPlayServerRelEntityMove();
 					move.setEntityID(entityID);
@@ -179,11 +179,11 @@ class Fantome
 				}
 
 				// Regard
-				WrapperPlayServerEntityLook look = new WrapperPlayServerEntityLook();
-				look.setEntityID(entityID);
-				look.setPitch(nouvellePos.getPitch());
-				look.setYaw(nouvellePos.getYaw());
-				look.sendPacket(player);
+				//WrapperPlayServerEntityLook look = new WrapperPlayServerEntityLook();
+				//look.setEntityID(entityID);
+				//look.setPitch(nouvellePos.getPitch());
+				//look.setYaw(nouvellePos.getYaw());
+				//look.sendPacket(player);
 				WrapperPlayServerEntityHeadRotation rotation = new WrapperPlayServerEntityHeadRotation();
 				rotation.setEntityID(entityID);
 				rotation.setHeadYaw((byte) (nouvellePos.getYaw() * 256.0F / 360.0));

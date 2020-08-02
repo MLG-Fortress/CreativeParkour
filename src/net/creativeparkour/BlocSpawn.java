@@ -17,14 +17,15 @@
 
 package net.creativeparkour;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
 class BlocSpawn extends BlocSpecial
 {
-	BlocSpawn(Block b, byte dir)
+	BlocSpawn(Block b,Material material ,byte dir)
 	{
-		super(b, dir, false);
+		super(b, dir, false,material);
 	}
 
 	@Override

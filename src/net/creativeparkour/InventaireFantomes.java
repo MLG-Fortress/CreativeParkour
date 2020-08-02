@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TimeZone;
+import java.util.UUID;
 import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
@@ -110,10 +111,11 @@ class InventaireFantomes
 		for (int i=limiteMin; continuer && i < nbFantomes; i++)
 		{
 			CPTime t = fantomes.get(i);
-			ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
-			SkullMeta meta = (SkullMeta) Bukkit.getItemFactory().getItemMeta(Material.SKULL_ITEM);
+			ItemStack item = new ItemStack(Material.PLAYER_HEAD, 1);
+			SkullMeta meta = (SkullMeta) Bukkit.getItemFactory().getItemMeta(Material.PLAYER_HEAD);
 			String nomFantome = t.getPlayerName();
-			meta.setOwner(nomFantome);
+			UUID uuid = t.getPlayerUUID();
+			meta.setOwningPlayer(Bukkit.getOfflinePlayer(uuid));
 			meta.setDisplayName(ChatColor.AQUA + nomFantome);
 			List<String> lore = new ArrayList<String>();
 			// Secondes
@@ -160,7 +162,7 @@ class InventaireFantomes
 			itemsAMettre.put(tailleInv - 1, item);
 			speciaux.put(tailleInv - 1, ActionInv.PAGE_SUIVANTE);
 		}
-		ItemStack item = new ItemStack(Material.EYE_OF_ENDER);
+		ItemStack item = new ItemStack(Material.ENDER_EYE);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.GREEN + Langues.getMessage("play.page") + " " + pageF + "/" + nbPagesF);
 		List<String> lore = new ArrayList<String>();
@@ -194,7 +196,7 @@ class InventaireFantomes
 		else
 			a = ActionInv.PAS_AFFICHER_AVANT;
 		texte += " (" + Langues.getMessage(a == ActionInv.AFFICHER_AVANT ? "play.ghosts.disabled" : "play.ghosts.enabled") + ")";
-		item = new ItemStack(Material.INK_SACK, 1, (short) (a == ActionInv.AFFICHER_AVANT ? 8 : 10));
+		item = new ItemStack(a == ActionInv.AFFICHER_AVANT ? Material.GRAY_DYE : Material.LIME_DYE, 1);
 		meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.YELLOW + texte);
 		lore = new ArrayList<String>();
@@ -205,7 +207,7 @@ class InventaireFantomes
 		speciaux.put(tailleInv - 4, a);
 
 
-		item = new ItemStack(Material.INK_SACK, 1, (short) 5);
+		item = new ItemStack(Material.PURPLE_DYE, 1);
 		meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.LIGHT_PURPLE + Langues.getMessage("play.ghosts.clear"));
 		item.setItemMeta(meta);
@@ -220,7 +222,7 @@ class InventaireFantomes
 		else
 			a = ActionInv.PAS_CHOISIR_PERSO;
 		texte += " (" + Langues.getMessage(a == ActionInv.CHOISIR_PERSO ? "play.ghosts.disabled" : "play.ghosts.enabled") + ")";
-		item = new ItemStack(Material.INK_SACK, 1, (short) (a == ActionInv.CHOISIR_PERSO ? 8 : 10));
+		item = new ItemStack(a == ActionInv.CHOISIR_PERSO ? Material.GRAY_DYE : Material.LIME_DYE, 1);
 		meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.YELLOW + texte);
 		item.setItemMeta(meta);
@@ -233,7 +235,7 @@ class InventaireFantomes
 		else
 			a = ActionInv.PAS_CHOISIR_MEILLEUR;
 		texte += " (" + Langues.getMessage(a == ActionInv.CHOISIR_MEILLEUR ? "play.ghosts.disabled" : "play.ghosts.enabled") + ")";
-		item = new ItemStack(Material.INK_SACK, 1, (short) (a == ActionInv.CHOISIR_MEILLEUR ? 8 : 10));
+		item = new ItemStack(a == ActionInv.CHOISIR_MEILLEUR ? Material.GRAY_DYE : Material.LIME_DYE, 1);
 		meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.YELLOW + texte);
 		item.setItemMeta(meta);
@@ -248,7 +250,7 @@ class InventaireFantomes
 			else
 				a = ActionInv.DESACTIVER_ENVOI;
 			texte += " (" + Langues.getMessage(a == ActionInv.ACTIVER_ENVOI ? "play.ghosts.disabled" : "play.ghosts.enabled") + ")";
-			item = new ItemStack(Material.INK_SACK, 1, (short) (a == ActionInv.ACTIVER_ENVOI ? 8 : 10));
+			item = new ItemStack(a == ActionInv.ACTIVER_ENVOI ? Material.GRAY_DYE : Material.LIME_DYE, 1);
 			meta = item.getItemMeta();
 			meta.setDisplayName(ChatColor.YELLOW + texte);
 			lore = new ArrayList<String>();

@@ -24,6 +24,8 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
@@ -57,13 +59,17 @@ public class CreativeParkour extends JavaPlugin implements Listener
 			Bukkit.getLogger().warning("********** CREATIVEPARKOUR DEPRECIATION WARNING **********");
 			Bukkit.getLogger().warning("It seems that you are using Bukkit. CreativeParkour is no longer compatible with it, please use Spigot. https://www.spigotmc.org/wiki/buildtools/");
 		}
-
+		
+		Bukkit.getLogger().info("HELLOW");
+		
 		// Auto updater (done before the rest in case of a plugin crash)
 		if (YamlConfiguration.loadConfiguration(new File(this.getDataFolder(), "configuration.yml")).getBoolean("enable auto updater"))
 		{
 			// Only this class is used to update the plugin, it connects to "https://api.curseforge.com"
 			// This is the updater from Gravity: https://bukkit.org/threads/updater-2-3-easy-safe-and-policy-compliant-auto-updating-for-your-plugins-new.96681/
-			new Updater(this, 82018, this.getFile(), Updater.UpdateType.DEFAULT, true);
+			
+			//new Updater(this, 82018, this.getFile(), Updater.UpdateType.DEFAULT, true);
+			Bukkit.getLogger().info("The auto updater has been disbaled cos of the plugin being discontinued");
 		}
 
 		getServer().getPluginManager().registerEvents(this, this);
@@ -104,14 +110,17 @@ public class CreativeParkour extends JavaPlugin implements Listener
 
 		if (Config.getConfig().getBoolean("enable data collection"))
 		{
-			stats = new Stats(this);
-			getServer().getScheduler().runTaskTimer(this, stats, 20 * 60 * 10, 20 * 60 * 60 * 6); // Délai de 10 minutes, puis intervalle de 6 heures
-			getServer().getPluginManager().registerEvents(stats, this);
+			//stats = new Stats(this);
+			//getServer().getScheduler().runTaskTimer(this, stats, 20 * 60 * 10, 20 * 60 * 60 * 6); // Délai de 10 minutes, puis intervalle de 6 heures
+			//getServer().getPluginManager().registerEvents(stats, this);
+			Bukkit.getLogger().info("The stats collection thing has been disbaled cos of the plugin being discontinued");
 		}
 
 		debug("INIT1", "Debug is enabled in " + getNom() + ", you can disable it in configuration.yml");
 		debug("INIT2", "Java version: " + System.getProperty("java.version"));
-
+		
+		Bukkit.getLogger().info(CPUtils.signs.isa(Material.ACACIA_WALL_SIGN) + "");
+		
 		Config.updateConfig("previous version", getVersion());
 	}
 

@@ -59,9 +59,9 @@ class InventaireCreation
 		{
 			lore = CPUtils.divideText(Langues.getMessage("creation.new map warn"), ChatColor.RED);
 		}
-		setObjet(11, Material.EMPTY_MAP, ChatColor.GREEN + Langues.getMessage("creation.new map"), lore, ActionInv.NOUVELLE_MAP);
+		setObjet(11, Material.MAP, ChatColor.GREEN + Langues.getMessage("creation.new map"), lore, ActionInv.NOUVELLE_MAP);
 
-		setObjet(15, Material.MAP, ChatColor.AQUA + Langues.getMessage("creation.load map"), null, ActionInv.CHARGER_MAP);
+		setObjet(15, Material.FILLED_MAP, ChatColor.AQUA + Langues.getMessage("creation.load map"), null, ActionInv.CHARGER_MAP);
 
 		setObjet(31, Material.PAPER, ChatColor.YELLOW + Langues.getMessage("creation.other maps"), null, ActionInv.AUTRES_MAPS);
 	}

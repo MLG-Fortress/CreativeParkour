@@ -27,8 +27,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 import org.bukkit.util.Vector;
 
+import com.sk89q.worldedit.IncompleteRegionException;
+import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.bukkit.selections.Selection;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.regions.Region;
 
 class WorldEditSelections
 {
@@ -36,19 +39,28 @@ class WorldEditSelections
 
 	static CubeDeBlocs getSelectionCubique(Player p)
 	{
-		Selection s = worldEdit.getSelection(p);
+		LocalSession s = worldEdit.getSession(p);
 		if (s == null)
 			return null;
+		Region region = null;
+		try 
+		{
+			region = s.getSelection(s.getSelectionWorld());
+		} 
+		catch (IncompleteRegionException IncompleteRegionException) 
+		{
+			
+		}
 
 		Map<Vector, MaterialData> blocs = new HashMap<Vector, MaterialData>();
-		Block min = s.getMinimumPoint().getBlock();
-		Block max = s.getMaximumPoint().getBlock();
+		Block min = getBlock(region,region.getMinimumPoint());
+		Block max = getBlock(region,region.getMaximumPoint());
 		World w = min.getWorld();
-		int taille = s.getHeight();
-		if (s.getLength() > taille)
-			taille = s.getLength();
-		if (s.getWidth() > taille)
-			taille = s.getWidth();
+		int taille = region.getHeight();
+		if (region.getLength() > taille)
+			taille = region.getLength();
+		if (region.getWidth() > taille)
+			taille = region.getWidth();
 		int xLim = min.getX() + taille;
 		int yLim = min.getY() + taille;
 		int zLim = min.getZ() + taille;
@@ -71,5 +83,10 @@ class WorldEditSelections
 			}
 		}
 		return new CubeDeBlocs(blocs, taille);
+	}
+	
+	private static Block getBlock(Region region, BlockVector3 vector)
+	{
+		return (Block) region.getWorld().getBlock(vector);
 	}
 }

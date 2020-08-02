@@ -18,6 +18,7 @@
 package net.creativeparkour;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -25,9 +26,9 @@ class BlocTP extends BlocSpecial
 {
 	private Location locTP;
 
-	BlocTP(Block b, Location locTP)
+	BlocTP(Block b,Material material,Location locTP)
 	{
-		super(b, true);
+		super(b, true,material);
 		this.locTP = locTP;
 	}
 

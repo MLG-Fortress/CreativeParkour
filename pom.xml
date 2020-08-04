@@ -75,7 +75,7 @@
 		<dependency>
 			<groupId>com.comphenix.protocol</groupId>
 			<artifactId>ProtocolLib</artifactId>
-			<version>4.5.0</version>
+			<version>4.5.1</version>
 		</dependency>
 	</dependencies>
 	<url>https://creativeparkour.net</url>

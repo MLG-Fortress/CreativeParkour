@@ -35,7 +35,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import net.gravitydevelopment.updater.Updater;
 import net.md_5.bungee.api.ChatColor;
 
 /**

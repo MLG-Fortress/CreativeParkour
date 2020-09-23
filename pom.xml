@@ -18,7 +18,8 @@
 				<directory>${basedir}/src/main/resources</directory>
 				<filtering>true</filtering>
 				<includes>
-					<include>plugin.yml</include>
+					<include>*.yml</include>
+					<include>*.lang</include>
 				</includes>
 			</resource>
 		</resources>

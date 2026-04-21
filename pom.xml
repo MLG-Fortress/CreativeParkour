@@ -37,15 +37,11 @@
 		</repository>
 		<repository>
 			<id>sk89q-repo</id>
-			<url>https://maven.sk89q.com/repo/</url>
+			<url>https://maven.enginehub.org/repo/</url>
 		</repository>
 		<repository>
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
-		</repository>
-		<repository>
-			<id>dmulloy2-repo</id>
-			<url>https://repo.dmulloy2.net/nexus/repository/public/</url>
 		</repository>
 	</repositories>
 	<dependencies>
@@ -53,7 +49,7 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.18.1-R0.1-SNAPSHOT</version>
+			<version>26.1.1-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<!--Bukkit API -->
@@ -63,6 +59,11 @@
 			<version>1.16.1-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency> -->
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+		</dependency>
 		<!-- WorldEdit -->
 		<dependency>
 			<groupId>com.sk89q.worldedit</groupId>
@@ -72,16 +73,16 @@
 		</dependency>
 		<!-- Vault -->
 		<dependency>
-			<groupId>net.milkbowl.vault</groupId>
+			<groupId>com.github.MilkBowl</groupId>
 			<artifactId>VaultAPI</artifactId>
-			<version>1.7</version>
+			<version>1.7.1</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- ProtocolLib -->
 		<dependency>
-			<groupId>com.comphenix.protocol</groupId>
+			<groupId>com.github.dmulloy2</groupId>
 			<artifactId>ProtocolLib</artifactId>
-			<version>4.7.0</version>
+			<version>5.3.0</version>
 		</dependency>
 	</dependencies>
 	<url>https://creativeparkour.net</url>

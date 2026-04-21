@@ -32,6 +32,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
+import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -259,12 +260,12 @@ class Config implements Listener
 				monde.setDifficulty(Difficulty.PEACEFUL);
 				monde.setTime(6000);
 				monde.setStorm(false);
-				monde.setGameRuleValue("doDaylightCycle", "false");
-				monde.setGameRuleValue("doFireTick", "false");
-				monde.setGameRuleValue("doModLoot", "false");
-				monde.setGameRuleValue("doMobSpawning", "false");
-				monde.setGameRuleValue("doTileDrops", "false");
-				monde.setGameRuleValue("mobGriefing", "false");
+				setGameRuleFalse(monde, "DO_DAYLIGHT_CYCLE");
+				setGameRuleFalse(monde, "DO_FIRE_TICK");
+				setGameRuleFalse(monde, "DO_MOB_LOOT");
+				setGameRuleFalse(monde, "DO_MOB_SPAWNING");
+				setGameRuleFalse(monde, "DO_TILE_DROPS");
+				setGameRuleFalse(monde, "MOB_GRIEFING");
 			}
 		}
 		else
@@ -608,6 +609,17 @@ class Config implements Listener
 		}
 	}
 
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private static void setGameRuleFalse(World world, String ruleName)
+	{
+		GameRule rule = GameRule.getByName(ruleName);
+		if (rule != null)
+		{
+			world.setGameRule(rule, false);
+		}
+	}
+
 	private static BaseComponent[] boutonNext(EtapeConfig etape)
 	{
 		return new ComponentBuilder(" ➥ ").color(ChatColor.YELLOW)
@@ -630,12 +642,12 @@ class Config implements Listener
 			monde.setDifficulty(Difficulty.PEACEFUL);
 			monde.setTime(6000);
 			monde.setStorm(false);
-			monde.setGameRuleValue("doDaylightCycle", "false");
-			monde.setGameRuleValue("doFireTick", "false");
-			monde.setGameRuleValue("doModLoot", "false");
-			monde.setGameRuleValue("doMobSpawning", "false");
-			monde.setGameRuleValue("doTileDrops", "false");
-			monde.setGameRuleValue("mobGriefing", "false");
+			setGameRuleFalse(monde, "DO_DAYLIGHT_CYCLE");
+			setGameRuleFalse(monde, "DO_FIRE_TICK");
+			setGameRuleFalse(monde, "DO_MOB_LOOT");
+			setGameRuleFalse(monde, "DO_MOB_SPAWNING");
+			setGameRuleFalse(monde, "DO_TILE_DROPS");
+			setGameRuleFalse(monde, "MOB_GRIEFING");
 			monde.setSpawnLocation(0, 4, 0);
 
 			updateConfig("map storage.map storage world", "CreativeParkourMaps");

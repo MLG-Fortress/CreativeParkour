@@ -260,12 +260,12 @@ class Config implements Listener
 				monde.setDifficulty(Difficulty.PEACEFUL);
 				monde.setTime(6000);
 				monde.setStorm(false);
-				setGameRuleFalse(monde, "DO_DAYLIGHT_CYCLE");
-				setGameRuleFalse(monde, "DO_FIRE_TICK");
-				setGameRuleFalse(monde, "DO_MOB_LOOT");
-				setGameRuleFalse(monde, "DO_MOB_SPAWNING");
-				setGameRuleFalse(monde, "DO_TILE_DROPS");
-				setGameRuleFalse(monde, "MOB_GRIEFING");
+				setGameRuleFalse(monde, GameRule.ADVANCE_TIME);
+				setGameRuleFalse(monde, GameRule.FIRE_DAMAGE);
+				setGameRuleFalse(monde, GameRule.MOB_DROPS);
+				setGameRuleFalse(monde, GameRule.SPAWN_MOBS);
+				setGameRuleFalse(monde, GameRule.BLOCK_DROPS);
+				setGameRuleFalse(monde, GameRule.MOB_GRIEFING);
 			}
 		}
 		else
@@ -610,10 +610,8 @@ class Config implements Listener
 	}
 
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private static void setGameRuleFalse(World world, String ruleName)
+	private static void setGameRuleFalse(World world, GameRule<Boolean> rule)
 	{
-		GameRule rule = GameRule.getByName(ruleName);
 		if (rule != null)
 		{
 			world.setGameRule(rule, false);
@@ -642,12 +640,12 @@ class Config implements Listener
 			monde.setDifficulty(Difficulty.PEACEFUL);
 			monde.setTime(6000);
 			monde.setStorm(false);
-			setGameRuleFalse(monde, "DO_DAYLIGHT_CYCLE");
-			setGameRuleFalse(monde, "DO_FIRE_TICK");
-			setGameRuleFalse(monde, "DO_MOB_LOOT");
-			setGameRuleFalse(monde, "DO_MOB_SPAWNING");
-			setGameRuleFalse(monde, "DO_TILE_DROPS");
-			setGameRuleFalse(monde, "MOB_GRIEFING");
+			setGameRuleFalse(monde, GameRule.ADVANCE_TIME);
+			setGameRuleFalse(monde, GameRule.FIRE_DAMAGE);
+			setGameRuleFalse(monde, GameRule.MOB_DROPS);
+			setGameRuleFalse(monde, GameRule.SPAWN_MOBS);
+			setGameRuleFalse(monde, GameRule.BLOCK_DROPS);
+			setGameRuleFalse(monde, GameRule.MOB_GRIEFING);
 			monde.setSpawnLocation(0, 4, 0);
 
 			updateConfig("map storage.map storage world", "CreativeParkourMaps");

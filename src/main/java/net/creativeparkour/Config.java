@@ -33,6 +33,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.GameRule;
+import org.bukkit.GameRules;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -260,12 +261,12 @@ class Config implements Listener
 				monde.setDifficulty(Difficulty.PEACEFUL);
 				monde.setTime(6000);
 				monde.setStorm(false);
-				setGameRuleFalse(monde, GameRule.ADVANCE_TIME);
-				setGameRuleFalse(monde, GameRule.FIRE_DAMAGE);
-				setGameRuleFalse(monde, GameRule.MOB_DROPS);
-				setGameRuleFalse(monde, GameRule.SPAWN_MOBS);
-				setGameRuleFalse(monde, GameRule.BLOCK_DROPS);
-				setGameRuleFalse(monde, GameRule.MOB_GRIEFING);
+				setGameRuleFalse(monde, GameRules.ADVANCE_TIME);
+				setGameRuleFalse(monde, GameRules.FIRE_DAMAGE);
+				setGameRuleFalse(monde, GameRules.MOB_DROPS);
+				setGameRuleFalse(monde, GameRules.SPAWN_MOBS);
+				setGameRuleFalse(monde, GameRules.BLOCK_DROPS);
+				setGameRuleFalse(monde, GameRules.MOB_GRIEFING);
 			}
 		}
 		else
@@ -640,12 +641,12 @@ class Config implements Listener
 			monde.setDifficulty(Difficulty.PEACEFUL);
 			monde.setTime(6000);
 			monde.setStorm(false);
-			setGameRuleFalse(monde, GameRule.ADVANCE_TIME);
-			setGameRuleFalse(monde, GameRule.FIRE_DAMAGE);
-			setGameRuleFalse(monde, GameRule.MOB_DROPS);
-			setGameRuleFalse(monde, GameRule.SPAWN_MOBS);
-			setGameRuleFalse(monde, GameRule.BLOCK_DROPS);
-			setGameRuleFalse(monde, GameRule.MOB_GRIEFING);
+			setGameRuleFalse(monde, GameRules.ADVANCE_TIME);
+			setGameRuleFalse(monde, GameRules.FIRE_DAMAGE);
+			setGameRuleFalse(monde, GameRules.MOB_DROPS);
+			setGameRuleFalse(monde, GameRules.SPAWN_MOBS);
+			setGameRuleFalse(monde, GameRules.BLOCK_DROPS);
+			setGameRuleFalse(monde, GameRules.MOB_GRIEFING);
 			monde.setSpawnLocation(0, 4, 0);
 
 			updateConfig("map storage.map storage world", "CreativeParkourMaps");

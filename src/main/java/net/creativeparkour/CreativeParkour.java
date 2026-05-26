@@ -19,6 +19,7 @@ package net.creativeparkour;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,14 +53,16 @@ public class CreativeParkour extends JavaPlugin implements Listener
 	@Override
 	public void onEnable()
 	{
+		Logger logger = getLogger();
+		
 		// Avertissement Bukkit
 		if (getServer().getVersion().toLowerCase().contains("bukkit"))
 		{
-			Bukkit.getLogger().warning("********** CREATIVEPARKOUR DEPRECIATION WARNING **********");
-			Bukkit.getLogger().warning("It seems that you are using Bukkit. CreativeParkour is no longer compatible with it, please use Spigot. https://www.spigotmc.org/wiki/buildtools/");
+			logger.warning("********** CREATIVEPARKOUR DEPRECIATION WARNING **********");
+			logger.warning("It seems that you are using Bukkit. CreativeParkour is no longer compatible with it, please use Spigot. https://www.spigotmc.org/wiki/buildtools/");
 		}
 		
-		Bukkit.getLogger().info("HELLOW");
+		logger.info("HELLOW");
 		
 		// Auto updater (done before the rest in case of a plugin crash)
 		if (YamlConfiguration.loadConfiguration(new File(this.getDataFolder(), "configuration.yml")).getBoolean("enable auto updater"))
@@ -68,7 +71,7 @@ public class CreativeParkour extends JavaPlugin implements Listener
 			// This is the updater from Gravity: https://bukkit.org/threads/updater-2-3-easy-safe-and-policy-compliant-auto-updating-for-your-plugins-new.96681/
 			
 			//new Updater(this, 82018, this.getFile(), Updater.UpdateType.DEFAULT, true);
-			Bukkit.getLogger().info("The auto updater has been disbaled cos of the plugin being discontinued");
+			logger.info("The auto updater has been disbaled cos of the plugin being discontinued");
 		}
 
 		getServer().getPluginManager().registerEvents(this, this);
@@ -85,7 +88,7 @@ public class CreativeParkour extends JavaPlugin implements Listener
 		Config.enable(false);
 		if (!protocollib && Config.fantomesPasInterdits())
 		{
-			Bukkit.getLogger().info(Config.prefix(false) + "ProtocolLib plugin not detected on this server. You must install it to enable player visibility and ghost-related features in CreativeParkour.");
+			logger.info(Config.prefix(false) + "ProtocolLib plugin not detected on this server. You must install it to enable player visibility and ghost-related features in CreativeParkour.");
 		}
 
 		getCommand("creativeparkour").setExecutor(new Commandes());
@@ -102,7 +105,7 @@ public class CreativeParkour extends JavaPlugin implements Listener
 				vault = true;
 			}
 			else if (getServer().getPluginManager().getPlugin("PermissionsEx") != null && worldEdit != null) // Avertissement si le mec a PermissionsEx mais pas Vault
-				Bukkit.getLogger().warning(Config.prefix(false) + "You have PermissionsEx, but not Vault, so there may be permission issues with the WorldEdit wand in CreativeParkour. Please install the Vault plugin to fix this.");
+				logger.warning(Config.prefix(false) + "You have PermissionsEx, but not Vault, so there may be permission issues with the WorldEdit wand in CreativeParkour. Please install the Vault plugin to fix this.");
 		} catch (Exception | Error e) {
 			// Rien
 		}
@@ -112,13 +115,13 @@ public class CreativeParkour extends JavaPlugin implements Listener
 			//stats = new Stats(this);
 			//getServer().getScheduler().runTaskTimer(this, stats, 20 * 60 * 10, 20 * 60 * 60 * 6); // Délai de 10 minutes, puis intervalle de 6 heures
 			//getServer().getPluginManager().registerEvents(stats, this);
-			Bukkit.getLogger().info("The stats collection thing has been disbaled cos of the plugin being discontinued");
+			logger.info("The stats collection thing has been disbaled cos of the plugin being discontinued");
 		}
 
 		debug("INIT1", "Debug is enabled in " + getNom() + ", you can disable it in configuration.yml");
 		debug("INIT2", "Java version: " + System.getProperty("java.version"));
 		
-		Bukkit.getLogger().info(CPUtils.signs.isa(Material.ACACIA_WALL_SIGN) + "");
+		logger.info(CPUtils.signs.isa(Material.ACACIA_WALL_SIGN) + "");
 		
 		Config.updateConfig("previous version", getVersion());
 	}
@@ -132,7 +135,7 @@ public class CreativeParkour extends JavaPlugin implements Listener
 		} catch (NoClassDefFoundError e) {
 			// Rien
 		}
-		Bukkit.getLogger().info(Config.prefix(false) + "CreativeParkour disabled, thank you for using it!");
+		getLogger().info(Config.prefix(false) + "CreativeParkour disabled, thank you for using it!");
 	}
 
 	static String getNom()
@@ -159,7 +162,8 @@ public class CreativeParkour extends JavaPlugin implements Listener
 	{
 		if (Config.getConfig().getBoolean("debug"))
 		{
-			Bukkit.getLogger().info(Config.prefix(false) + "[DEBUG:" + id + "] " + msg);
+			CreativeParkour plugin = (CreativeParkour) getPlugin();
+			plugin.getLogger().info(Config.prefix(false) + "[DEBUG:" + id + "] " + msg);
 		}
 	}
 
